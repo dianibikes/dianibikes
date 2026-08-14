@@ -1,0 +1,38 @@
+# Diani Bikes
+
+> Diani Bikes is a local bike tour, rental, and excursion operator on the Kenyan coast, offering guided bike tours, mountain and electric bike rentals, tuk tuk experiences, and marine excursions across Diani, Watamu, and Kilifi.
+
+Diani Bikes ("A Cultural Adventure") was founded by Masha Kirao to inspire and empower adventurers of all ages to discover the wonders of the Kenyan coast in a fun, eco-friendly, and authentic way — on two wheels, by tuk tuk, by boat, or by camel. Tours are led by local, English-speaking guides. Open Monday–Saturday, 8am–6pm (closed Sundays). Locations: Diani Bazaar, Diani, and Jiweleupe, Watamu. Contact: +254 713 959668, info@dianibike-tours.com.
+
+## Bike Tours
+- [Village Guided Bike Tour](https://dianibike-tours.com/village-guided-bike-tour.html): Guided ride through local village life in Diani and Watamu — homesteads, markets, and everyday coastal life.
+- [Kaya Kinondo Sacred Forest](https://dianibike-tours.com/kaya-kinondo-sacred-forest.html): Guided bike ride to a sacred Mijikenda forest site protected by the local community for generations.
+- [Giraffe Feeding Adventure](https://dianibike-tours.com/giraffe-feeding-adventure.html): Cycle to a wildlife stop for a close, hand-feeding encounter with giraffes.
+- [Elephant Sporting](https://dianibike-tours.com/elephant-sporting.html): Guided ride toward Watamu to spot elephants in their natural surroundings, by bike or tuk tuk.
+- [Bush Tour](https://dianibike-tours.com/bush-tour.html): Rugged guided bike tour through the coastal bush between Diani, Kilifi, and Watamu.
+
+## Marine Excursions
+- [Mangrove Tour (Sundowner)](https://dianibike-tours.com/mangrove-sundowner.html): Boat drift through mangrove channels as the sun sets over the water.
+- [Full Day Private Dolphin Tour](https://dianibike-tours.com/full-day-private-dolphin-tour.html): Full-day private boat charter searching the Indian Ocean for dolphins.
+- [Camel Adventure](https://dianibike-tours.com/camel-adventure.html): Relaxed guided camel ride along the white sand of Diani beach.
+- [Beach Tour](https://dianibike-tours.com/beach-tour.html): Guided walk or ride along Diani's beachfront.
+
+## Forest Excursions
+- [Snake Show And School](https://dianibike-tours.com/snake-show-and-school.html): Educational, family-friendly stop to see native snake species up close.
+- [Ruins of Mnarani](https://dianibike-tours.com/ruins-of-mnarani.html): Historic Swahili settlement ruins overlooking Kilifi Creek.
+- [Monkey Trails And Conservation Centre](https://dianibike-tours.com/monkey-trails-and-conservation-centre.html): Guided forest walk with a conservation-focused local guide.
+- [Gede Ruins Tour](https://dianibike-tours.com/gede-ruins-tour.html): Ancient Swahili ruins near Watamu, among the coast's best-preserved historic sites.
+
+## Rentals
+- [Bike Rentals](https://dianibike-tours.com/rentals.html): Mountain, electric, manual, and kids' bikes — helmet and lock included with every rental.
+
+## Tuk Tuk Experience
+- [Tuk Tuk Experience](https://dianibike-tours.com/tuk-tuk.html): The same cultural and nature-packed tours, by tuk tuk instead of by bike.
+
+## Other
+- [Bike Tours (overview)](https://dianibike-tours.com/bike-tours.html)
+- [Marine Excursions (overview)](https://dianibike-tours.com/marine-excursions.html)
+- [Forest Excursions (overview)](https://dianibike-tours.com/forest-excursions.html)
+- [About](https://dianibike-tours.com/about.html): Founder, mission, and FAQs.
+- [Gallery](https://dianibike-tours.com/gallery.html): Photos from tours and excursions.
+- [Contact](https://dianibike-tours.com/contact.html): Booking form, phone, email, and locations.

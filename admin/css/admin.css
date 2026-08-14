@@ -1,0 +1,623 @@
+/* ==========================================================================
+   Diani Bikes — Admin console
+   Built on top of ../css/style.css design tokens (colors, fonts, .btn, .tag,
+   .form-field). This file adds the admin-only layout shell + components.
+   ========================================================================== */
+
+body { background: var(--color-sand-deep); }
+
+/* ---------- Shell layout ---------- */
+.admin-shell { min-height: 100vh; }
+
+/* Below 960px the sidebar becomes an off-canvas drawer — same slide-in pattern
+   as the public site's .primary-nav — opened by .admin-menu-toggle in the
+   topbar. It was previously just `display:none` with no way to open it at
+   all; the only mobile navigation was the bottom icon strip, which cuts off
+   after ~5 of 11 items with no scroll indicator. */
+.admin-sidebar {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: 82%;
+  max-width: 300px;
+  background: var(--color-charcoal);
+  padding: 1.5rem 1.1rem;
+  z-index: 210;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: 10px 0 30px rgba(0,0,0,0.25);
+}
+.admin-sidebar.is-open { transform: translateX(0); }
+
+.admin-menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid rgba(27,39,51,0.14);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  color: var(--color-charcoal);
+  flex-shrink: 0;
+}
+
+.admin-sidebar-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(15,20,26,0.5);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.admin-sidebar-scrim.is-open { opacity: 1; pointer-events: auto; }
+
+.admin-main {
+  min-height: 100vh;
+  padding-bottom: 5.5rem; /* clears mobile bottom nav */
+}
+
+@media (min-width: 960px) {
+  .admin-menu-toggle, .admin-sidebar-scrim { display: none; }
+  .admin-main { margin-left: 248px; padding-bottom: 0; }
+  .admin-sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 248px;
+    max-width: none;
+    transform: none;
+    box-shadow: none;
+    z-index: 50;
+  }
+}
+
+.admin-logo {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--color-white);
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.admin-logo span { color: var(--color-yellow); }
+.admin-logo small {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8C97A2;
+  margin-top: 0.3rem;
+}
+
+.admin-nav { display: flex; flex-direction: column; gap: 0.2rem; flex: 1; }
+.admin-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: var(--radius-sm);
+  color: #C9D3DC;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+.admin-nav-link svg { flex-shrink: 0; }
+.admin-nav-link:hover { background: rgba(255,255,255,0.06); color: var(--color-white); }
+.admin-nav-link.active { background: var(--color-blue); color: var(--color-white); font-weight: 700; }
+
+.admin-sidebar-footer {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+.admin-sidebar-footer .admin-nav-link { color: #8C97A2; }
+.admin-sidebar-footer .admin-nav-link:hover { color: var(--color-white); }
+
+/* ---------- Mobile bottom nav ---------- */
+.admin-bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  background: var(--color-white);
+  border-top: 1px solid rgba(27,39,51,0.1);
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+  z-index: 50;
+}
+.admin-bottom-nav::-webkit-scrollbar { display: none; }
+@media (min-width: 960px) { .admin-bottom-nav { display: none; } }
+/* The strip holds 11 items and only ~5 fit on a phone width — this at least
+   signals there's more to scroll to. The drawer (.admin-menu-toggle) is the
+   way to reach everything without scrolling at all. */
+@media (max-width: 959px) {
+  .admin-bottom-nav { mask-image: linear-gradient(90deg, #000 92%, transparent 100%); }
+}
+.admin-bottom-nav a {
+  flex: 0 0 auto;
+  min-width: 66px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.6rem 0.4rem 0.7rem;
+  font-size: 0.64rem;
+  font-weight: 700;
+  color: var(--color-charcoal-soft);
+  text-align: center;
+}
+.admin-bottom-nav a.active { color: var(--color-blue); }
+.admin-bottom-nav a svg { flex-shrink: 0; }
+
+/* ---------- Topbar ---------- */
+.admin-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(250, 246, 240, 0.94);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(27,39,51,0.08);
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.admin-topbar h1 {
+  font-size: 1.35rem;
+  margin: 0;
+}
+.admin-topbar-sub { font-size: 0.85rem; color: var(--color-charcoal-soft); margin: 0.15rem 0 0; }
+.admin-topbar-actions { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+
+.admin-content { padding: 1.5rem 1.25rem 3rem; max-width: 1180px; }
+/* The bookings table is the one genuinely wide layout in the admin — it has 7
+   columns and needs the whole window. Everything else keeps the 1180px measure,
+   since stretching text inputs across a wide monitor makes forms harder to read. */
+body[data-page="bookings"] .admin-content { max-width: none; }
+
+/* ---------- Stat cards (dashboard) ---------- */
+.stat-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: var(--space-4);
+}
+@media (min-width: 720px) { .stat-card-grid { grid-template-columns: repeat(4, 1fr); } }
+.stat-card {
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.stat-card .icon-badge { width: 40px; height: 40px; }
+.stat-card .num { font-family: var(--font-display); font-size: 1.9rem; font-weight: 700; color: var(--color-charcoal); }
+.stat-card .label { font-size: 0.82rem; color: var(--color-charcoal-soft); }
+
+.quick-links { display: grid; grid-template-columns: 1fr; gap: 0.9rem; }
+@media (min-width: 640px) { .quick-links { grid-template-columns: repeat(2, 1fr); } }
+.quick-link-card {
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 1.3rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.quick-link-card .icon-badge { width: 44px; height: 44px; flex-shrink: 0; }
+.quick-link-card h4 { margin: 0 0 0.2rem; font-size: 1rem; }
+.quick-link-card p { margin: 0; font-size: 0.85rem; color: var(--color-charcoal-soft); }
+
+/* ---------- Filter pills ---------- */
+.admin-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
+
+/* ---------- Admin list cards (tours, team) ---------- */
+.admin-list { display: flex; flex-direction: column; gap: 0.8rem; }
+.admin-list-item {
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 0.9rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.admin-list-item .thumb {
+  width: 64px; height: 64px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--color-sand-deep);
+}
+.admin-list-item .thumb img { width: 100%; height: 100%; object-fit: cover; }
+.admin-list-item .thumb.round { border-radius: 50%; }
+.admin-list-item .info { flex: 1; min-width: 0; }
+.admin-list-item .info h4 { margin: 0 0 0.25rem; font-size: 0.98rem; }
+.admin-list-item .info .meta { display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
+.admin-list-item .info .meta span.sub { font-size: 0.82rem; color: var(--color-charcoal-soft); }
+.admin-list-item .actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
+
+.icon-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(27,39,51,0.14);
+  background: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-charcoal-soft);
+  flex-shrink: 0;
+}
+.icon-btn:hover { background: var(--color-sand); color: var(--color-charcoal); }
+.icon-btn.danger:hover { background: rgba(232,57,124,0.1); color: var(--color-pink); border-color: rgba(232,57,124,0.3); }
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  color: var(--color-charcoal-soft);
+}
+.empty-state svg { margin-bottom: 0.75rem; color: rgba(27,39,51,0.25); }
+
+/* ---------- Admin table (rentals) ---------- */
+.admin-table-wrap {
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.admin-table { width: 100%; border-collapse: collapse; }
+.admin-table th {
+  text-align: left;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-charcoal-soft);
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(27,39,51,0.08);
+}
+.admin-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(27,39,51,0.06);
+  font-size: 0.9rem;
+  vertical-align: top;
+}
+.admin-table tr:last-child td { border-bottom: none; }
+.status-select {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.35em 0.7em;
+  border-radius: 999px;
+  border: none;
+  background: rgba(30,111,217,0.1);
+  color: var(--color-blue);
+}
+.status-select[data-status="Contacted"] { background: rgba(245,197,24,0.2); color: #8A6B00; }
+.status-select[data-status="Confirmed"] { background: rgba(31,157,85,0.12); color: #1F9D55; }
+.status-select[data-status="Cancelled"] { background: rgba(27,39,51,0.1); color: var(--color-charcoal-soft); }
+
+.payment-status-select {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.35em 0.7em;
+  border-radius: 999px;
+  border: none;
+  background: rgba(232,57,124,0.1);
+  color: var(--color-pink);
+}
+.payment-status-select[data-pay="Paid Deposit"] { background: rgba(245,197,24,0.2); color: #8A6B00; }
+.payment-status-select[data-pay="Paid in Full"] { background: rgba(31,157,85,0.12); color: #1F9D55; }
+
+/* Keep the three row buttons on one line — they were wrapping onto a second row
+   and stretching every row's height. They wrap again in the mobile card layout. */
+.row-actions { display: flex; gap: 0.3rem; flex-wrap: nowrap; }
+.booking-note { font-size: 0.74rem; color: var(--color-charcoal-soft); margin-top: 0.2rem; display: block; }
+/* Dates read as one unit — no reason to break "2 Sept" onto its own line now
+   that the table has the room. Details keeps the slack instead. */
+.admin-table td[data-label="Date"] { white-space: nowrap; }
+
+@media (max-width: 800px) {
+  .admin-table thead { display: none; }
+  .admin-table, .admin-table tbody, .admin-table tr, .admin-table td { display: block; width: 100%; }
+  .admin-table tr {
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    margin-bottom: 0.9rem;
+    padding: 0.6rem 0.2rem;
+  }
+  .admin-table-wrap { background: transparent; box-shadow: none; border-radius: 0; }
+  .row-actions { flex-wrap: wrap; justify-content: flex-end; }
+  .admin-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px dashed rgba(27,39,51,0.08);
+    padding: 0.55rem 1rem;
+    text-align: right;
+  }
+  .admin-table tr td:last-child { border-bottom: none; }
+  .admin-table td::before {
+    content: attr(data-label);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-charcoal-soft);
+    text-align: left;
+  }
+
+  /* Customer and Details hold multi-line content (name/email/phone,
+     destination/bike breakdown) — the label-left, value-right split above
+     works for one-line values but turns multi-line content into two cramped,
+     independently-flexed columns since every child element becomes its own
+     flex item. These two get the label as a caption above instead. */
+  .admin-table td[data-label="Customer"],
+  .admin-table td[data-label="Details"] {
+    display: block;
+    text-align: left;
+  }
+  .admin-table td[data-label="Customer"]::before,
+  .admin-table td[data-label="Details"]::before {
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+}
+
+/* ---------- Forms ---------- */
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+@media (min-width: 960px) { .admin-form-grid { grid-template-columns: 2fr 1fr; } }
+.form-card {
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 1.5rem;
+}
+.form-card + .form-card { margin-top: var(--space-3); }
+.form-card h3 { font-size: 1.05rem; margin-bottom: 1.1rem; }
+.form-card .form-grid { gap: 1rem; }
+
+/* Chip-toggle group (category / location tags) */
+.chip-toggle-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip-toggle {
+  border: 1.5px solid rgba(27,39,51,0.16);
+  background: var(--color-white);
+  color: var(--color-charcoal-soft);
+  border-radius: 999px;
+  padding: 0.5em 1.1em;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.chip-toggle.active { background: var(--color-blue); border-color: var(--color-blue); color: var(--color-white); }
+.chip-toggle.active[data-tone="pink"] { background: var(--color-pink); border-color: var(--color-pink); }
+.chip-toggle.active[data-tone="yellow"] { background: var(--color-yellow); border-color: var(--color-yellow); color: var(--color-charcoal); }
+
+/* Repeatable list editor (included / excluded / carry) */
+.repeat-list { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.75rem; }
+.repeat-list-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--color-sand-deep);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.7rem 0.55rem 0.9rem;
+}
+.repeat-list-row span { flex: 1; font-size: 0.9rem; overflow-wrap: anywhere; }
+.repeat-list-row button {
+  background: none; border: none; color: var(--color-charcoal-soft);
+  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.repeat-list-row button:hover { background: rgba(232,57,124,0.12); color: var(--color-pink); }
+.repeat-add-row { display: flex; gap: 0.5rem; }
+.repeat-add-row input { flex: 1; }
+
+/* Upload dropzone */
+.upload-dropzone {
+  border: 2px dashed rgba(27,39,51,0.2);
+  border-radius: var(--radius-md);
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--color-charcoal-soft);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.upload-dropzone:hover, .upload-dropzone.drag-over { border-color: var(--color-blue); background: rgba(30,111,217,0.04); }
+.upload-dropzone svg { margin-bottom: 0.5rem; color: var(--color-blue); }
+.upload-dropzone .hint { font-size: 0.78rem; margin-top: 0.25rem; }
+
+.image-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+.image-preview-grid .preview-item {
+  position: relative;
+  aspect-ratio: 1/1;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-sand-deep);
+}
+.image-preview-grid .preview-item img { width: 100%; height: 100%; object-fit: cover; }
+.image-preview-grid .preview-item button {
+  position: absolute; top: 4px; right: 4px;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: rgba(27,39,51,0.75); color: white; border: none;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.form-actions-bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: var(--space-3);
+}
+
+/* ---------- Gallery grid (admin) ---------- */
+.admin-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
+}
+@media (min-width: 640px) { .admin-gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 960px) { .admin-gallery-grid { grid-template-columns: repeat(4, 1fr); } }
+.admin-gallery-item {
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.admin-gallery-item .photo { aspect-ratio: 1/1; background: var(--color-sand-deep); position: relative; }
+.admin-gallery-item .photo img { width: 100%; height: 100%; object-fit: cover; }
+.admin-gallery-item .photo .icon-btn {
+  position: absolute; top: 0.5rem; right: 0.5rem;
+  background: rgba(255,255,255,0.92);
+}
+.admin-gallery-item .body { padding: 0.7rem 0.8rem 0.9rem; }
+.admin-gallery-item .tag-row { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.admin-gallery-item .tag-row .tag { cursor: pointer; user-select: none; }
+.admin-gallery-item .tag-row .tag.active { background: var(--color-blue); color: var(--color-white); }
+
+/* ---------- Calendar ---------- */
+.calendar-layout { display: grid; grid-template-columns: 1fr; gap: var(--space-3); align-items: start; }
+@media (min-width: 960px) { .calendar-layout { grid-template-columns: 1.6fr 1fr; } }
+
+.calendar-card {
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 1.25rem;
+}
+.calendar-card + .calendar-card { margin-top: var(--space-3); }
+.calendar-card h3 { margin: 0 0 1rem; font-size: 1.05rem; }
+
+.calendar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.1rem; gap: 0.75rem; flex-wrap: wrap; }
+.calendar-header h3 { margin: 0; font-size: 1.15rem; }
+.calendar-nav-btns { display: flex; align-items: center; gap: 0.4rem; }
+
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.3rem; }
+.calendar-weekday {
+  text-align: center;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-charcoal-soft);
+  padding-bottom: 0.5rem;
+}
+.calendar-day {
+  position: relative;
+  aspect-ratio: 1/1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  color: var(--color-charcoal);
+  background: var(--color-sand-deep);
+  border: 1.5px solid transparent;
+}
+.calendar-day.outside { opacity: 0.32; }
+.calendar-day.today { border-color: var(--color-blue); font-weight: 700; }
+.calendar-day.has-bookings { background: rgba(30,111,217,0.08); }
+.calendar-day.selected { background: var(--color-blue); color: var(--color-white); }
+.calendar-day.selected.today { border-color: var(--color-white); }
+.calendar-day .day-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--color-pink); }
+.calendar-day.selected .day-dot { background: var(--color-yellow); }
+.calendar-day .day-count {
+  position: absolute;
+  top: 2px;
+  right: 3px;
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: var(--color-blue);
+}
+.calendar-day.selected .day-count { color: var(--color-white); }
+
+.day-panel-date { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 0.9rem; }
+
+.booking-mini-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.booking-mini-card { background: var(--color-sand-deep); border-radius: var(--radius-sm); padding: 0.75rem 0.9rem; }
+.booking-mini-card .top-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.3rem; }
+.booking-mini-card .name { font-weight: 700; font-size: 0.9rem; }
+.booking-mini-card .meta { font-size: 0.78rem; color: var(--color-charcoal-soft); line-height: 1.5; }
+.booking-mini-card .upcoming-date {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-blue);
+  background: rgba(30,111,217,0.1);
+  padding: 0.25em 0.6em;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.booking-mini-card.is-clickable { cursor: pointer; }
+.booking-mini-card.is-clickable:hover { background: var(--color-sand); }
+
+/* ---------- Toast ---------- */
+.admin-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translate(-50%, 20px);
+  background: var(--color-charcoal);
+  color: var(--color-white);
+  padding: 0.8em 1.4em;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 300;
+}
+.admin-toast.is-open { opacity: 1; transform: translate(-50%, 0); }
+.admin-toast.is-error { background: var(--color-pink); }
+@media (min-width: 960px) { .admin-toast { bottom: 1.75rem; } }
+@media (max-width: 959px) { .admin-toast { bottom: 5.5rem; } }
+
+/* ---------- Confirm dialog ---------- */
+.confirm-overlay {
+  position: fixed; top: 0; right: 0; bottom: 0; left: 0;
+  background: rgba(15,20,26,0.5);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+  z-index: 250;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.confirm-overlay.is-open { opacity: 1; pointer-events: auto; }
+.confirm-box {
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  padding: 1.6rem;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+}
+.confirm-box h4 { margin-bottom: 0.5rem; }
+.confirm-box p { font-size: 0.9rem; color: var(--color-charcoal-soft); margin-bottom: 1.25rem; }
+.confirm-box .actions { display: flex; gap: 0.75rem; justify-content: center; }

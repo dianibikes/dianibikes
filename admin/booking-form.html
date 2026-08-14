@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Booking | Diani Bikes Admin</title>
+<link rel="icon" type="image/png" href="../images/favicon.png">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="css/admin.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/auth-guard.js"></script>
+</head>
+<body data-page="bookings">
+
+<div class="admin-shell">
+  <div class="admin-sidebar-scrim"></div>
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <span><span style="color:var(--color-blue)">Diani</span> Bikes</span>
+      <small>Admin Console</small>
+    </div>
+    <nav class="admin-nav">
+      <a href="index.html" class="admin-nav-link" data-nav="dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="tours.html" class="admin-nav-link" data-nav="tours">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        Tours &amp; Excursions
+      </a>
+      <a href="bikes.html" class="admin-nav-link" data-nav="bikes">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+        Bikes &amp; Rates
+      </a>
+      <a href="bookings.html" class="admin-nav-link" data-nav="bookings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12a1 1 0 011 1v16l-7-4-7 4V4a1 1 0 011-1z"/></svg>
+        Bookings
+      </a>
+      <a href="calendar.html" class="admin-nav-link" data-nav="calendar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Calendar
+      </a>
+      <a href="team.html" class="admin-nav-link" data-nav="team">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Team
+      </a>
+      <a href="partners.html" class="admin-nav-link" data-nav="partners">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        Partners
+      </a>
+      <a href="reviews.html" class="admin-nav-link" data-nav="reviews">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9 12 2"/></svg>
+        Reviews
+      </a>
+      <a href="gallery.html" class="admin-nav-link" data-nav="gallery">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        Gallery
+      </a>
+      <a href="faqs.html" class="admin-nav-link" data-nav="faqs">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+        FAQs
+      </a>
+      <a href="seo.html" class="admin-nav-link" data-nav="seo">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        SEO
+      </a>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <a href="../index.html" class="admin-nav-link" data-logout="../index.html">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to Site
+      </a>
+      <a href="#" class="admin-nav-link" data-logout>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Log Out
+      </a>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button type="button" class="admin-menu-toggle" aria-label="Open menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+      <div>
+        <h1>Add Booking</h1>
+        <p class="admin-topbar-sub">Manually record a rental or tour booking.</p>
+      </div>
+      <div class="admin-topbar-actions">
+        <a href="bookings.html" class="btn btn-outline btn-sm">Cancel</a>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      <form id="booking-add-form" novalidate>
+        <div class="form-card" style="max-width:640px;">
+          <h3>Booking Type</h3>
+          <div class="chip-toggle-group" id="type-group">
+            <button type="button" class="chip-toggle active" data-value="rental">Bike Rental</button>
+            <button type="button" class="chip-toggle" data-value="tour">Tour / Excursion</button>
+          </div>
+
+          <div class="form-grid" style="margin-top:1.25rem;">
+            <div class="form-row-2">
+              <div class="form-field">
+                <label for="f-name">Full Name</label>
+                <input type="text" id="f-name" placeholder="Jane Doe" required>
+              </div>
+              <div class="form-field">
+                <label for="f-email">Email Address</label>
+                <input type="email" id="f-email" placeholder="jane@example.com">
+              </div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-field">
+                <label for="f-whatsapp">WhatsApp Number</label>
+                <input type="tel" id="f-whatsapp" placeholder="+254 7XX XXX XXX">
+              </div>
+              <div class="form-field">
+                <label for="f-date">Date</label>
+                <input type="date" id="f-date" required>
+              </div>
+            </div>
+
+            <div id="rental-fields">
+              <div class="form-field">
+                <label for="f-office">Office</label>
+                <select id="f-office">
+                  <option value="Diani Bazaar">Diani Bazaar</option>
+                  <option value="Watamu (Jiweleupe)">Watamu (Jiweleupe)</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Bike Types &amp; Quantity</label>
+                <div class="bike-qty-list">
+                  <div class="bike-qty-row"><label for="f-qty-electric">Electric Bike</label><input type="number" id="f-qty-electric" min="0" value="0"></div>
+                  <div class="bike-qty-row"><label for="f-qty-mountain">Mountain Bike</label><input type="number" id="f-qty-mountain" min="0" value="0"></div>
+                  <div class="bike-qty-row"><label for="f-qty-manual">Manual Bike</label><input type="number" id="f-qty-manual" min="0" value="0"></div>
+                  <div class="bike-qty-row"><label for="f-qty-kids">Kids Bike</label><input type="number" id="f-qty-kids" min="0" value="0"></div>
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="f-duration">Rental Length</label>
+                <select id="f-duration">
+                  <option value="Half Day">Half Day</option>
+                  <option value="Full Day">Full Day</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="tour-fields" style="display:none;">
+              <div class="form-field">
+                <label for="f-tour">Tour / Excursion</label>
+                <select id="f-tour"></select>
+              </div>
+              <div class="form-field">
+                <label for="f-guests">Number of Guests</label>
+                <input type="number" id="f-guests" min="1" value="2">
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-field">
+                <label>Payment Status</label>
+                <div class="chip-toggle-group" id="payment-group">
+                  <button type="button" class="chip-toggle active" data-value="Not Paid">Not Paid</button>
+                  <button type="button" class="chip-toggle" data-value="Paid Deposit">Paid Deposit</button>
+                  <button type="button" class="chip-toggle" data-value="Paid in Full">Paid in Full</button>
+                </div>
+              </div>
+              <div class="form-field">
+                <label>Booking Status</label>
+                <div class="chip-toggle-group" id="bstatus-group">
+                  <button type="button" class="chip-toggle active" data-value="New">New</button>
+                  <button type="button" class="chip-toggle" data-value="Contacted">Contacted</button>
+                  <button type="button" class="chip-toggle" data-value="Confirmed">Confirmed</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions-bar">
+            <button type="submit" class="btn btn-primary">Save Booking</button>
+          </div>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <nav class="admin-bottom-nav">
+    <a href="index.html" data-nav="dashboard">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Home
+    </a>
+    <a href="tours.html" data-nav="tours">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+      Tours
+    </a>
+    <a href="bikes.html" data-nav="bikes">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+      Bikes
+    </a>
+    <a href="bookings.html" data-nav="bookings">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12a1 1 0 011 1v16l-7-4-7 4V4a1 1 0 011-1z"/></svg>
+      Bookings
+    </a>
+    <a href="calendar.html" data-nav="calendar">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Calendar
+    </a>
+    <a href="team.html" data-nav="team">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      Team
+    </a>
+    <a href="partners.html" data-nav="partners">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+      Partners
+    </a>
+    <a href="reviews.html" data-nav="reviews">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9 12 2"/></svg>
+      Reviews
+    </a>
+    <a href="gallery.html" data-nav="gallery">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      Gallery
+    </a>
+    <a href="faqs.html" data-nav="faqs">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+      FAQs
+    </a>
+    <a href="seo.html" data-nav="seo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      SEO
+    </a>
+  </nav>
+</div>
+
+<script src="js/admin.js"></script>
+<script>
+  var typeGroup = document.getElementById('type-group');
+  var paymentGroup = document.getElementById('payment-group');
+  var bstatusGroup = document.getElementById('bstatus-group');
+  AdminUI.initChipToggleGroup(typeGroup, { multi: false });
+  AdminUI.initChipToggleGroup(paymentGroup, { multi: false });
+  AdminUI.initChipToggleGroup(bstatusGroup, { multi: false });
+
+  var rentalFields = document.getElementById('rental-fields');
+  var tourFields = document.getElementById('tour-fields');
+  var tourSelect = document.getElementById('f-tour');
+
+  AdminStore.getAll('tours').then(function (tours) {
+    tours.sort(function (a, b) { return a.title.localeCompare(b.title); }).forEach(function (t) {
+      var opt = document.createElement('option');
+      opt.value = t.title;
+      opt.textContent = t.title;
+      tourSelect.appendChild(opt);
+    });
+  });
+
+  typeGroup.addEventListener('click', function () {
+    var type = AdminUI.getActiveChips(typeGroup)[0];
+    rentalFields.style.display = type === 'tour' ? 'none' : '';
+    tourFields.style.display = type === 'tour' ? '' : 'none';
+  });
+
+  AdminUI.initInlineValidation(document.getElementById('booking-add-form'));
+  document.getElementById('booking-add-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = document.getElementById('f-name').value.trim();
+    var date = document.getElementById('f-date').value;
+    if (!name || !date) {
+      AdminUI.toast('Please enter a name and date');
+      return;
+    }
+    var type = AdminUI.getActiveChips(typeGroup)[0] || 'rental';
+
+    var record = {
+      type: type,
+      name: name,
+      email: document.getElementById('f-email').value.trim(),
+      whatsapp: document.getElementById('f-whatsapp').value.trim(),
+      date: date,
+      submittedAt: new Date().toISOString(),
+      status: AdminUI.getActiveChips(bstatusGroup)[0] || 'New',
+      paymentStatus: AdminUI.getActiveChips(paymentGroup)[0] || 'Not Paid'
+    };
+
+    if (type === 'rental') {
+      record.interest = 'Bike Rental';
+      record.office = document.getElementById('f-office').value;
+      record.duration = document.getElementById('f-duration').value;
+      record.bikes = {
+        'Electric Bike': parseInt(document.getElementById('f-qty-electric').value, 10) || 0,
+        'Mountain Bike': parseInt(document.getElementById('f-qty-mountain').value, 10) || 0,
+        'Manual Bike': parseInt(document.getElementById('f-qty-manual').value, 10) || 0,
+        'Kids Bike': parseInt(document.getElementById('f-qty-kids').value, 10) || 0
+      };
+    } else {
+      record.interest = tourSelect.value || 'Tour Booking';
+      record.guests = parseInt(document.getElementById('f-guests').value, 10) || null;
+    }
+
+    AdminStore.upsert('bookings', record).then(function () {
+      AdminUI.toast('Booking added');
+      setTimeout(function () { window.location.href = 'bookings.html'; }, 500);
+    }).catch(AdminUI.showError);
+  });
+</script>
+</body>
+</html>

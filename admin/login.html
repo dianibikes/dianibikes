@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login | Diani Bikes</title>
+<link rel="icon" type="image/png" href="../images/favicon.png">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="css/admin.css">
+<style>
+  body { background: var(--color-charcoal); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+  .login-card {
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    padding: 2.25rem 2rem;
+    width: 100%;
+    max-width: 380px;
+  }
+  .login-logo { display: flex; justify-content: center; margin-bottom: 1.25rem; }
+  .login-logo img { height: 52px; width: auto; }
+  .login-card h1 { font-size: 1.3rem; text-align: center; margin-bottom: 0.35rem; }
+  .login-card .sub { text-align: center; color: var(--color-charcoal-soft); font-size: 0.88rem; margin-bottom: 1.5rem; }
+  .login-error {
+    display: none;
+    background: rgba(232,57,124,0.1);
+    color: var(--color-pink);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.7em 1em;
+    border-radius: var(--radius-sm);
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .login-error.is-open { display: block; }
+  .login-success {
+    display: none;
+    background: rgba(31,157,85,0.1);
+    color: #1F9D55;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.7em 1em;
+    border-radius: var(--radius-sm);
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .login-success.is-open { display: block; }
+  .login-forgot { display: block; text-align: right; font-size: 0.82rem; color: var(--color-blue); font-weight: 700; margin-top: -0.4rem; }
+  .login-back { display: block; text-align: center; margin-top: 1.4rem; font-size: 0.85rem; color: var(--color-blue); font-weight: 700; }
+  .btn-block[disabled] { opacity: 0.6; cursor: default; }
+</style>
+</head>
+<body>
+
+<div class="login-card">
+  <div class="login-logo"><img src="../images/logo.svg" alt="Diani Bikes"></div>
+  <h1>Admin Login</h1>
+  <p class="sub">Sign in to manage tours, bookings, and content.</p>
+
+  <div class="login-error" id="login-error"></div>
+  <div class="login-success" id="login-success"></div>
+
+  <form id="login-form" class="form-grid">
+    <div class="form-field">
+      <label for="admin-email">Email</label>
+      <input type="email" id="admin-email" name="email" placeholder="you@example.com" autocomplete="username" autofocus required>
+    </div>
+    <div class="form-field">
+      <label for="admin-password">Password</label>
+      <input type="password" id="admin-password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+      <a href="#" class="login-forgot" id="forgot-link">Forgot password?</a>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block" id="login-submit">Log In</button>
+  </form>
+
+  <a href="../index.html" class="login-back">&larr; Back to Site</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/supabase-client.js"></script>
+<script>
+  var form = document.getElementById('login-form');
+  var emailInput = document.getElementById('admin-email');
+  var passwordInput = document.getElementById('admin-password');
+  var errorEl = document.getElementById('login-error');
+  var successEl = document.getElementById('login-success');
+  var submitBtn = document.getElementById('login-submit');
+  var forgotLink = document.getElementById('forgot-link');
+
+  // Allow-list of admin pages the ?next= param may point at. Without this an
+  // attacker could send a staff member to login.html?next=https://evil.com (or
+  // a javascript: URL) and have the site itself perform the redirect once they
+  // sign in. Anything not on the list falls back to the dashboard.
+  var ALLOWED_NEXT = [
+    'index.html', 'tours.html', 'tour-form.html', 'bikes.html', 'bike-form.html',
+    'bookings.html', 'booking-form.html', 'calendar.html', 'team.html', 'team-form.html',
+    'partners.html', 'partner-form.html', 'reviews.html', 'review-form.html',
+    'gallery.html', 'faqs.html', 'faq-form.html', 'seo.html'
+  ];
+
+  function nextUrl() {
+    var params = new URLSearchParams(window.location.search);
+    var requested = params.get('next') || '';
+    // compare on the bare filename only — no scheme, host, path, or query
+    var file = requested.split(/[?#]/)[0];
+    return ALLOWED_NEXT.indexOf(file) !== -1 ? file : 'index.html';
+  }
+
+  function showError(message) {
+    successEl.classList.remove('is-open');
+    errorEl.textContent = message;
+    errorEl.classList.add('is-open');
+  }
+
+  function showSuccess(message) {
+    errorEl.classList.remove('is-open');
+    successEl.textContent = message;
+    successEl.classList.add('is-open');
+  }
+
+  /* ---------- Failed-attempt throttle ----------
+     Supabase already rate-limits authentication server-side, and that is the
+     control that actually stops an attacker — this one lives in the browser
+     and anyone determined can clear it. Its job is narrower: stop a shared or
+     unattended machine being used to grind guesses through the real form, and
+     make the slowdown visible. Backs off 15s, 30s, 60s, 120s… capped at 5min
+     after the 3rd consecutive failure. */
+  var THROTTLE_KEY = 'db_login_throttle';
+  var FREE_ATTEMPTS = 3;
+  var lockTimer = null;
+
+  function readThrottle() {
+    try {
+      var raw = sessionStorage.getItem(THROTTLE_KEY);
+      var v = raw ? JSON.parse(raw) : null;
+      if (v && typeof v.fails === 'number' && typeof v.until === 'number') return v;
+    } catch (e) { /* corrupt or unavailable — start clean */ }
+    return { fails: 0, until: 0 };
+  }
+
+  function writeThrottle(v) {
+    try { sessionStorage.setItem(THROTTLE_KEY, JSON.stringify(v)); } catch (e) { /* ignore */ }
+  }
+
+  function clearThrottle() {
+    try { sessionStorage.removeItem(THROTTLE_KEY); } catch (e) { /* ignore */ }
+  }
+
+  function secondsLeft() {
+    return Math.max(0, Math.ceil((readThrottle().until - Date.now()) / 1000));
+  }
+
+  function registerFailure() {
+    var t = readThrottle();
+    t.fails += 1;
+    if (t.fails >= FREE_ATTEMPTS) {
+      var backoff = Math.min(15 * Math.pow(2, t.fails - FREE_ATTEMPTS), 300);
+      t.until = Date.now() + backoff * 1000;
+    }
+    writeThrottle(t);
+  }
+
+  function applyLock() {
+    if (lockTimer) { clearInterval(lockTimer); lockTimer = null; }
+    var left = secondsLeft();
+    if (left <= 0) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Log In';
+      return false;
+    }
+    submitBtn.disabled = true;
+    var tick = function () {
+      var s = secondsLeft();
+      if (s <= 0) {
+        clearInterval(lockTimer);
+        lockTimer = null;
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Log In';
+        errorEl.classList.remove('is-open');
+        return;
+      }
+      submitBtn.textContent = 'Try again in ' + s + 's';
+    };
+    tick();
+    lockTimer = setInterval(tick, 1000);
+    showError('Too many failed sign-in attempts. Please wait before trying again.');
+    return true;
+  }
+
+  applyLock();
+
+  forgotLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    var email = emailInput.value.trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showError('Enter your email address above first, then click "Forgot password?"');
+      emailInput.focus();
+      return;
+    }
+    forgotLink.textContent = 'Sending…';
+    window.sb.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + window.location.pathname.replace(/login\.html$/, 'reset-password.html')
+    }).then(function (result) {
+      forgotLink.textContent = 'Forgot password?';
+      if (result.error) {
+        showError(result.error.message);
+      } else {
+        showSuccess('If that email has an account, a reset link is on its way — check your inbox.');
+      }
+    }).catch(function () {
+      forgotLink.textContent = 'Forgot password?';
+      showError('Could not reach the sign-in service. Check your connection and try again.');
+    });
+  });
+
+  // Already signed in? Skip straight past the login form.
+  window.sb.auth.getSession().then(function (result) {
+    if (result.data && result.data.session) {
+      window.location.href = nextUrl();
+    }
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (applyLock()) return; // still locked out from earlier failures
+
+    errorEl.classList.remove('is-open');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Signing in…';
+
+    window.sb.auth.signInWithPassword({
+      email: emailInput.value.trim(),
+      password: passwordInput.value
+    }).then(function (result) {
+      passwordInput.value = '';
+      if (result.error) {
+        registerFailure();
+        // Deliberately generic: the real error distinguishes "user not found"
+        // from "wrong password", which confirms to an attacker which addresses
+        // have accounts.
+        showError('Incorrect email or password.');
+        if (!applyLock()) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Log In';
+        }
+        passwordInput.focus();
+        return;
+      }
+      clearThrottle();
+      window.location.href = nextUrl();
+    }).catch(function () {
+      showError('Could not reach the sign-in service. Check your connection and try again.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Log In';
+    });
+  });
+</script>
+</body>
+</html>

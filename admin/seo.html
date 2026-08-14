@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO | Diani Bikes Admin</title>
+<link rel="icon" type="image/png" href="../images/favicon.png">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="css/admin.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/auth-guard.js"></script>
+</head>
+<body data-page="seo">
+
+<div class="admin-shell">
+  <div class="admin-sidebar-scrim"></div>
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <span><span style="color:var(--color-blue)">Diani</span> Bikes</span>
+      <small>Admin Console</small>
+    </div>
+    <nav class="admin-nav">
+      <a href="index.html" class="admin-nav-link" data-nav="dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="tours.html" class="admin-nav-link" data-nav="tours">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        Tours &amp; Excursions
+      </a>
+      <a href="bikes.html" class="admin-nav-link" data-nav="bikes">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+        Bikes &amp; Rates
+      </a>
+      <a href="bookings.html" class="admin-nav-link" data-nav="bookings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12a1 1 0 011 1v16l-7-4-7 4V4a1 1 0 011-1z"/></svg>
+        Bookings
+      </a>
+      <a href="calendar.html" class="admin-nav-link" data-nav="calendar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Calendar
+      </a>
+      <a href="team.html" class="admin-nav-link" data-nav="team">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Team
+      </a>
+      <a href="partners.html" class="admin-nav-link" data-nav="partners">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        Partners
+      </a>
+      <a href="reviews.html" class="admin-nav-link" data-nav="reviews">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9 12 2"/></svg>
+        Reviews
+      </a>
+      <a href="gallery.html" class="admin-nav-link" data-nav="gallery">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        Gallery
+      </a>
+      <a href="faqs.html" class="admin-nav-link" data-nav="faqs">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+        FAQs
+      </a>
+      <a href="seo.html" class="admin-nav-link" data-nav="seo">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        SEO
+      </a>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <a href="../index.html" class="admin-nav-link" data-logout="../index.html">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to Site
+      </a>
+      <a href="#" class="admin-nav-link" data-logout>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Log Out
+      </a>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button type="button" class="admin-menu-toggle" aria-label="Open menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+      <div>
+        <h1>SEO</h1>
+        <p class="admin-topbar-sub" id="seo-count-sub">—</p>
+      </div>
+      <div class="admin-topbar-actions">
+        <button type="button" class="btn btn-outline btn-sm" id="copy-handoff-btn">Copy Handoff Summary</button>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      <p class="placeholder-note" style="display:block; margin-bottom:1.25rem; line-height:1.5;">
+        This site is static HTML with no live backend, so edits here are <strong>drafts saved in this browser only</strong> —
+        they don't change the real pages search engines see. When you're happy with a draft, hit
+        <strong>&ldquo;Copy Handoff Summary&rdquo;</strong> and send it to your developer (or paste it back to Claude) to publish
+        into the live site.
+      </p>
+
+      <div class="stat-card-grid">
+        <div class="stat-card">
+          <span class="icon-badge" style="background:rgba(31,157,85,0.12); color:#1F9D55;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          </span>
+          <div class="num" style="font-size:1.1rem;">Live</div>
+          <div class="label">Structured data (Organization, Breadcrumbs, FAQ, Tours) on all 22 pages</div>
+        </div>
+        <div class="stat-card">
+          <span class="icon-badge" style="background:rgba(31,157,85,0.12); color:#1F9D55;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          </span>
+          <div class="num" style="font-size:1.1rem;">Live</div>
+          <div class="label">sitemap.xml &amp; robots.txt at the site root</div>
+        </div>
+        <div class="stat-card">
+          <span class="icon-badge" style="background:rgba(31,157,85,0.12); color:#1F9D55;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          </span>
+          <div class="num" style="font-size:1.1rem;">Live</div>
+          <div class="label">Canonical URLs + Open Graph / Twitter cards on every page</div>
+        </div>
+        <div class="stat-card">
+          <span class="icon-badge" style="background:rgba(30,111,217,0.1); color:var(--color-blue);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </span>
+          <div class="num" style="font-size:1.1rem;" id="modified-count">0</div>
+          <div class="label">Page(s) with unpublished draft changes</div>
+        </div>
+      </div>
+
+      <div class="admin-filters" id="page-filters">
+        <button class="filter-btn active" data-filter="all">All Pages</button>
+        <button class="filter-btn" data-filter="modified">Modified Only</button>
+      </div>
+
+      <div class="admin-list" id="seo-list"></div>
+    </main>
+  </div>
+
+  <nav class="admin-bottom-nav">
+    <a href="index.html" data-nav="dashboard">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Home
+    </a>
+    <a href="tours.html" data-nav="tours">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+      Tours
+    </a>
+    <a href="bikes.html" data-nav="bikes">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+      Bikes
+    </a>
+    <a href="bookings.html" data-nav="bookings">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12a1 1 0 011 1v16l-7-4-7 4V4a1 1 0 011-1z"/></svg>
+      Bookings
+    </a>
+    <a href="calendar.html" data-nav="calendar">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Calendar
+    </a>
+    <a href="team.html" data-nav="team">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      Team
+    </a>
+    <a href="partners.html" data-nav="partners">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+      Partners
+    </a>
+    <a href="reviews.html" data-nav="reviews">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9 12 2"/></svg>
+      Reviews
+    </a>
+    <a href="gallery.html" data-nav="gallery">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      Gallery
+    </a>
+    <a href="faqs.html" data-nav="faqs">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+      FAQs
+    </a>
+    <a href="seo.html" data-nav="seo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      SEO
+    </a>
+  </nav>
+</div>
+
+<script src="js/admin.js"></script>
+<script>
+  var currentFilter = 'all';
+
+  function isModified(item) {
+    return item.draftTitle !== item.title || item.draftDescription !== item.description;
+  }
+
+  function counterClass(len, max) {
+    if (len > max) return 'color:var(--color-pink); font-weight:700;';
+    if (len > max * 0.85) return 'color:#8A6B00; font-weight:700;';
+    return 'color:var(--color-charcoal-soft);';
+  }
+
+  // Only let http(s) and same-site relative URLs become a clickable href —
+  // keeps a stored "javascript:" value from running when the link is clicked.
+  function safeUrl(url) {
+    var u = String(url || '').trim();
+    return /^(https?:\/\/|\/|[\w.-]+\.html)/i.test(u) ? u : '#';
+  }
+
+  function renderSeo() {
+    AdminStore.getAll('seo').then(function (all) {
+    var modifiedCount = all.filter(isModified).length;
+    document.getElementById('modified-count').textContent = modifiedCount;
+    document.getElementById('seo-count-sub').textContent = all.length + ' pages tracked — ' + modifiedCount + ' with unpublished changes';
+
+    var filtered = currentFilter === 'modified' ? all.filter(isModified) : all;
+
+    var listEl = document.getElementById('seo-list');
+    listEl.innerHTML = '';
+
+    filtered.forEach(function (item) {
+      var card = document.createElement('div');
+      card.className = 'form-card';
+      card.style.cssText = 'display:flex; flex-direction:column; gap:0.9rem;';
+
+      var modified = isModified(item);
+      var titleLen = item.draftTitle.length;
+      var descLen = item.draftDescription.length;
+
+      card.innerHTML =
+        '<div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.75rem; flex-wrap:wrap;">' +
+          '<div>' +
+            '<h3 style="margin-bottom:0.2rem;">' + AdminUI.escapeHtml(item.label) + '</h3>' +
+            '<a href="' + AdminUI.escapeHtml(safeUrl(item.url)) + '" target="_blank" rel="noopener" style="font-size:0.8rem; color:var(--color-charcoal-soft);">' + AdminUI.escapeHtml(item.url) + '</a>' +
+          '</div>' +
+          (modified ? '<span class="tag tag-yellow">Modified &mdash; not yet published</span>' : '<span class="tag" style="background:rgba(31,157,85,0.12); color:#1F9D55;">Synced with live page</span>') +
+        '</div>' +
+        '<div class="form-field">' +
+          '<label>Title tag <span style="float:right;" class="title-counter">' + titleLen + ' / 60</span></label>' +
+          '<input type="text" class="seo-title-input" value="' + AdminUI.escapeHtml(item.draftTitle) + '">' +
+        '</div>' +
+        '<div class="form-field">' +
+          '<label>Meta description <span style="float:right;" class="desc-counter">' + descLen + ' / 155</span></label>' +
+          '<textarea class="seo-desc-input" rows="3">' + AdminUI.escapeHtml(item.draftDescription) + '</textarea>' +
+        '</div>' +
+        '<div class="form-actions-bar" style="margin-top:0;">' +
+          '<button type="button" class="btn btn-outline btn-sm" data-reset="' + item.id + '"' + (modified ? '' : ' disabled') + '>Reset to Live</button>' +
+          '<button type="button" class="btn btn-primary btn-sm" data-save="' + item.id + '">Save Draft</button>' +
+        '</div>';
+
+      var titleInput = card.querySelector('.seo-title-input');
+      var descInput = card.querySelector('.seo-desc-input');
+      var titleCounter = card.querySelector('.title-counter');
+      var descCounter = card.querySelector('.desc-counter');
+
+      titleInput.addEventListener('input', function () {
+        titleCounter.textContent = titleInput.value.length + ' / 60';
+        titleCounter.style.cssText = 'float:right;' + counterClass(titleInput.value.length, 60);
+      });
+      descInput.addEventListener('input', function () {
+        descCounter.textContent = descInput.value.length + ' / 155';
+        descCounter.style.cssText = 'float:right;' + counterClass(descInput.value.length, 155);
+      });
+      titleCounter.style.cssText = 'float:right;' + counterClass(titleLen, 60);
+      descCounter.style.cssText = 'float:right;' + counterClass(descLen, 155);
+
+      card.querySelector('[data-save]').addEventListener('click', function () {
+        AdminStore.upsert('seo', { id: item.id, draftTitle: titleInput.value, draftDescription: descInput.value }).then(function () {
+          AdminUI.toast('Draft saved for ' + item.label);
+          renderSeo();
+        }).catch(AdminUI.showError);
+      });
+      var resetBtn = card.querySelector('[data-reset]');
+      resetBtn.addEventListener('click', function () {
+        if (resetBtn.disabled) return;
+        AdminStore.upsert('seo', { id: item.id, draftTitle: item.title, draftDescription: item.description }).then(function () {
+          AdminUI.toast('Reverted to live values');
+          renderSeo();
+        }).catch(AdminUI.showError);
+      });
+
+      listEl.appendChild(card);
+    });
+    });
+  }
+
+  document.getElementById('page-filters').addEventListener('click', function (e) {
+    var btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('#page-filters .filter-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderSeo();
+  });
+
+  document.getElementById('copy-handoff-btn').addEventListener('click', function () {
+    AdminStore.getAll('seo').then(function (all) {
+      var modified = all.filter(isModified);
+      if (!modified.length) {
+        AdminUI.toast('No draft changes to copy yet');
+        return;
+      }
+      var lines = ['SEO changes to publish to the live site:', ''];
+      modified.forEach(function (item) {
+        lines.push('Page: ' + item.label + ' (' + item.page + ')');
+        lines.push('Title: ' + item.draftTitle);
+        lines.push('Description: ' + item.draftDescription);
+        lines.push('');
+      });
+      var text = lines.join('\n');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          AdminUI.toast('Copied ' + modified.length + ' page(s) to clipboard');
+        }, function () {
+          window.prompt('Copy this text:', text);
+        });
+      } else {
+        window.prompt('Copy this text:', text);
+      }
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', renderSeo);
+</script>
+</body>
+</html>

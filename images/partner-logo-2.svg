@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" width="240" height="120" role="img" aria-label="Partner Two placeholder logo">
+  <rect width="240" height="120" rx="10" fill="#F1EEE8"/>
+  <rect x="1" y="1" width="238" height="118" rx="9" fill="none" stroke="#1B2733" stroke-opacity="0.15" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="120" y="58" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="16" font-weight="700" fill="#1B2733" opacity="0.75">Partner Two</text>
+  <text x="120" y="78" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="10" font-weight="700" letter-spacing="1" fill="#1B2733" opacity="0.4">PLACEHOLDER LOGO</text>
+</svg>

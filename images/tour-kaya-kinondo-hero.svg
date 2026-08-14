@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 800" width="1600" height="800" role="img" aria-label="Placeholder hero photo">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FAF6F0"/>
+      <stop offset="100%" stop-color="#EFE6D8"/>
+    </linearGradient>
+    <pattern id="stripes" width="46" height="46" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <rect width="46" height="46" fill="transparent"/>
+      <line x1="0" y1="0" x2="0" y2="46" stroke="#1B2733" stroke-opacity="0.035" stroke-width="20"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="800" fill="url(#g)"/>
+  <rect width="1600" height="800" fill="url(#stripes)"/>
+</svg>

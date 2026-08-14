@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendar | Diani Bikes Admin</title>
+<link rel="icon" type="image/png" href="../images/favicon.png">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="css/admin.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/auth-guard.js"></script>
+</head>
+<body data-page="calendar">
+
+<div class="admin-shell">
+  <div class="admin-sidebar-scrim"></div>
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <span><span style="color:var(--color-blue)">Diani</span> Bikes</span>
+      <small>Admin Console</small>
+    </div>
+    <nav class="admin-nav">
+      <a href="index.html" class="admin-nav-link" data-nav="dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="tours.html" class="admin-nav-link" data-nav="tours">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        Tours &amp; Excursions
+      </a>
+      <a href="bikes.html" class="admin-nav-link" data-nav="bikes">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+        Bikes &amp; Rates
+      </a>
+      <a href="bookings.html" class="admin-nav-link" data-nav="bookings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12a1 1 0 011 1v16l-7-4-7 4V4a1 1 0 011-1z"/></svg>
+        Bookings
+      </a>
+      <a href="calendar.html" class="admin-nav-link" data-nav="calendar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Calendar
+      </a>
+      <a href="team.html" class="admin-nav-link" data-nav="team">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Team
+      </a>
+      <a href="partners.html" class="admin-nav-link" data-nav="partners">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        Partners
+      </a>
+      <a href="reviews.html" class="admin-nav-link" data-nav="reviews">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9 12 2"/></svg>
+        Reviews
+      </a>
+      <a href="gallery.html" class="admin-nav-link" data-nav="gallery">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        Gallery
+      </a>
+      <a href="faqs.html" class="admin-nav-link" data-nav="faqs">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+        FAQs
+      </a>
+      <a href="seo.html" class="admin-nav-link" data-nav="seo">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        SEO
+      </a>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <a href="../index.html" class="admin-nav-link" data-logout="../index.html">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to Site
+      </a>
+      <a href="#" class="admin-nav-link" data-logout>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Log Out
+      </a>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button type="button" class="admin-menu-toggle" aria-label="Open menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+      <div>
+        <h1>Calendar</h1>
+        <p class="admin-topbar-sub" id="calendar-count-sub">—</p>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      <div class="calendar-layout">
+
+        <div class="calendar-main">
+          <div class="calendar-card">
+            <div class="calendar-header">
+              <h3 id="calendar-month-label">Month Year</h3>
+              <div class="calendar-nav-btns">
+                <button type="button" class="icon-btn" id="cal-prev" aria-label="Previous month">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" id="cal-today">Today</button>
+                <button type="button" class="icon-btn" id="cal-next" aria-label="Next month">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="calendar-grid" id="calendar-weekdays">
+              <div class="calendar-weekday">Sun</div>
+              <div class="calendar-weekday">Mon</div>
+              <div class="calendar-weekday">Tue</div>
+              <div class="calendar-weekday">Wed</div>
+              <div class="calendar-weekday">Thu</div>
+              <div class="calendar-weekday">Fri</div>
+              <div class="calendar-weekday">Sat</div>
+            </div>
+            <div class="calendar-grid" id="calendar-days"></div>
+          </div>
+
+          <div class="calendar-card">
+            <p class="day-panel-date" id="day-panel-date">—</p>
+            <div class="booking-mini-list" id="day-panel-list"></div>
+            <div class="empty-state" id="day-panel-empty" style="display:none; padding: 1.75rem 1rem;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              <p style="margin-top:0.5rem;">Nothing booked on this day.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="calendar-sidebar">
+          <div class="calendar-card">
+            <h3>Upcoming</h3>
+            <div class="booking-mini-list" id="upcoming-list"></div>
+            <div class="empty-state" id="upcoming-empty" style="display:none; padding: 1.75rem 1rem;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 6 10-6"/></svg>
+              <p style="margin-top:0.5rem;">No upcoming bookings.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <nav class="admin-bottom-nav">
+    <a href="index.html" data-nav="dashboard">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Home
+    </a>
+    <a href="tours.html" data-nav="tours">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+      Tours
+    </a>
+    <a href="bikes.html" data-nav="bikes">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+      Bikes
+    </a>
+    <a href="bookings.html" data-nav="bookings">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12a1 1 0 011 1v16l-7-4-7 4V4a1 1 0 011-1z"/></svg>
+      Bookings
+    </a>
+    <a href="calendar.html" data-nav="calendar">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Calendar
+    </a>
+    <a href="team.html" data-nav="team">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      Team
+    </a>
+    <a href="partners.html" data-nav="partners">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+      Partners
+    </a>
+    <a href="reviews.html" data-nav="reviews">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9 12 2"/></svg>
+      Reviews
+    </a>
+    <a href="gallery.html" data-nav="gallery">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      Gallery
+    </a>
+    <a href="faqs.html" data-nav="faqs">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+      FAQs
+    </a>
+    <a href="seo.html" data-nav="seo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      SEO
+    </a>
+  </nav>
+</div>
+
+<script src="js/admin.js"></script>
+<script>
+  var MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var WEEKDAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+  function toISODate(d) {
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  function todayISO() { return toISODate(new Date()); }
+
+  var today = new Date();
+  var viewYear = today.getFullYear();
+  var viewMonth = today.getMonth();
+  var selectedDate = todayISO();
+  var allBookings = [];
+
+  function formatBikes(bikes) {
+    var parts = [];
+    Object.keys(bikes || {}).forEach(function (label) {
+      if (bikes[label] > 0) parts.push(bikes[label] + 'x ' + label);
+    });
+    return parts.length ? parts.join(', ') : null;
+  }
+
+  function bookingSummary(b) {
+    if (b.type === 'tour') {
+      var guests = b.guests ? (b.guests + ' guest' + (b.guests === 1 ? '' : 's')) : '';
+      return AdminUI.escapeHtml(b.interest || 'Tour booking') + (guests ? ' &middot; ' + guests : '');
+    }
+    var bikes = formatBikes(b.bikes);
+    var duration = AdminUI.escapeHtml(b.duration || '');
+    return bikes ? (AdminUI.escapeHtml(bikes) + ' &middot; ' + duration) : (duration || 'Booking');
+  }
+
+  function getBookingsByDate() {
+    var map = {};
+    allBookings.forEach(function (b) {
+      if (!b.date) return;
+      (map[b.date] = map[b.date] || []).push(b);
+    });
+    return map;
+  }
+
+  function renderCalendar() {
+    var byDate = getBookingsByDate();
+    var totalBookings = allBookings.length;
+    document.getElementById('calendar-count-sub').textContent = totalBookings + ' booking' + (totalBookings === 1 ? '' : 's') + ' on record';
+
+    document.getElementById('calendar-month-label').textContent = MONTH_NAMES[viewMonth] + ' ' + viewYear;
+
+    var firstOfMonth = new Date(viewYear, viewMonth, 1);
+    var startOffset = firstOfMonth.getDay();
+    var daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+    var totalCells = Math.ceil((startOffset + daysInMonth) / 7) * 7;
+
+    var grid = document.getElementById('calendar-days');
+    grid.innerHTML = '';
+
+    for (var i = 0; i < totalCells; i++) {
+      var dayNum = i - startOffset + 1;
+      var cellDate = new Date(viewYear, viewMonth, dayNum);
+      var iso = toISODate(cellDate);
+      var outside = dayNum < 1 || dayNum > daysInMonth;
+      var bookingsForDay = byDate[iso] || [];
+
+      var cell = document.createElement('button');
+      cell.type = 'button';
+      cell.className = 'calendar-day';
+      if (outside) cell.classList.add('outside');
+      if (iso === todayISO()) cell.classList.add('today');
+      if (iso === selectedDate) cell.classList.add('selected');
+      if (bookingsForDay.length) cell.classList.add('has-bookings');
+
+      var html = '<span>' + cellDate.getDate() + '</span>';
+      if (bookingsForDay.length) html += '<span class="day-dot"></span>';
+      if (bookingsForDay.length > 1) html += '<span class="day-count">' + bookingsForDay.length + '</span>';
+      cell.innerHTML = html;
+
+      cell.addEventListener('click', function () {
+        var clickedIso = this.getAttribute('data-iso');
+        var clickedDate = new Date(clickedIso + 'T00:00:00');
+        if (clickedDate.getMonth() !== viewMonth || clickedDate.getFullYear() !== viewYear) {
+          viewMonth = clickedDate.getMonth();
+          viewYear = clickedDate.getFullYear();
+        }
+        selectedDate = clickedIso;
+        renderCalendar();
+        renderDayPanel();
+      });
+      cell.setAttribute('data-iso', iso);
+      grid.appendChild(cell);
+    }
+  }
+
+  function renderDayPanel() {
+    var byDate = getBookingsByDate();
+    var bookings = byDate[selectedDate] || [];
+    var d = new Date(selectedDate + 'T00:00:00');
+    var label = WEEKDAY_NAMES[d.getDay()] + ', ' + d.getDate() + ' ' + MONTH_NAMES[d.getMonth()] + ' ' + d.getFullYear();
+    document.getElementById('day-panel-date').textContent = label;
+
+    var listEl = document.getElementById('day-panel-list');
+    var emptyEl = document.getElementById('day-panel-empty');
+    listEl.innerHTML = '';
+
+    if (!bookings.length) {
+      emptyEl.style.display = 'block';
+      return;
+    }
+    emptyEl.style.display = 'none';
+
+    bookings.forEach(function (b) {
+      var card = document.createElement('div');
+      card.className = 'booking-mini-card';
+      card.innerHTML =
+        '<div class="top-row"><span class="name">' + AdminUI.escapeHtml(b.name) + '</span>' +
+        '<span class="tag ' + (b.status === 'Confirmed' ? 'tag-blue' : (b.status === 'Contacted' ? 'tag-yellow' : '')) + '">' + AdminUI.escapeHtml(b.status) + '</span></div>' +
+        '<div class="meta">' + (b.office ? AdminUI.escapeHtml(b.office) + '<br>' : '') + bookingSummary(b) + '</div>';
+      listEl.appendChild(card);
+    });
+  }
+
+  function renderUpcoming() {
+    var all = allBookings.filter(function (b) { return b.date && b.date >= todayISO(); });
+    all.sort(function (a, b) { return a.date.localeCompare(b.date); });
+    var upcoming = all.slice(0, 6);
+
+    var listEl = document.getElementById('upcoming-list');
+    var emptyEl = document.getElementById('upcoming-empty');
+    listEl.innerHTML = '';
+
+    if (!upcoming.length) {
+      emptyEl.style.display = 'block';
+      return;
+    }
+    emptyEl.style.display = 'none';
+
+    upcoming.forEach(function (b) {
+      var d = new Date(b.date + 'T00:00:00');
+      var dateLabel = d.getDate() + ' ' + MONTH_NAMES[d.getMonth()].slice(0, 3);
+      var card = document.createElement('div');
+      card.className = 'booking-mini-card is-clickable';
+      card.innerHTML =
+        '<div class="top-row"><span class="name">' + AdminUI.escapeHtml(b.name) + '</span><span class="upcoming-date">' + dateLabel + '</span></div>' +
+        '<div class="meta">' + (b.office ? AdminUI.escapeHtml(b.office) + '<br>' : '') + bookingSummary(b) + '</div>';
+      card.addEventListener('click', function () {
+        viewMonth = d.getMonth();
+        viewYear = d.getFullYear();
+        selectedDate = b.date;
+        renderCalendar();
+        renderDayPanel();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      listEl.appendChild(card);
+    });
+  }
+
+  document.getElementById('cal-prev').addEventListener('click', function () {
+    viewMonth--;
+    if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+    renderCalendar();
+  });
+  document.getElementById('cal-next').addEventListener('click', function () {
+    viewMonth++;
+    if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+    renderCalendar();
+  });
+  document.getElementById('cal-today').addEventListener('click', function () {
+    var now = new Date();
+    viewMonth = now.getMonth();
+    viewYear = now.getFullYear();
+    selectedDate = todayISO();
+    renderCalendar();
+    renderDayPanel();
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    AdminStore.getAll('bookings').then(function (bookings) {
+      allBookings = bookings;
+      renderCalendar();
+      renderDayPanel();
+      renderUpcoming();
+    });
+  });
+</script>
+</body>
+</html>
