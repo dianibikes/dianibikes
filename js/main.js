@@ -688,8 +688,14 @@
     var emailField = contactForm.querySelector('[name="email"]');
     if (emailField && emailParam) emailField.value = emailParam;
 
+    // The WhatsApp number now has its own field (see contact.html), so a
+    // number arriving from a tour/rental booking form goes straight into it
+    // instead of being folded into the message text.
+    var whatsappField = contactForm.querySelector('[name="whatsapp"]');
+    if (whatsappField && whatsappParam) whatsappField.value = whatsappParam;
+
     var messageField = contactForm.querySelector('[name="message"]');
-    if (messageField && (guestsParam || dateParam || whatsappParam || officeParam || durationParam || bikeRequests.length)) {
+    if (messageField && (guestsParam || dateParam || officeParam || durationParam || bikeRequests.length)) {
       var fillMessage = function (bikeNames) {
         var lines = [];
         var bikeLines = bikeRequests.map(function (b) {
@@ -701,7 +707,6 @@
         if (durationParam) lines.push('Rental length: ' + durationParam);
         if (guestsParam) lines.push('Number of people: ' + guestsParam);
         if (dateParam) lines.push('Preferred date: ' + dateParam);
-        if (whatsappParam) lines.push('WhatsApp number: ' + whatsappParam);
         messageField.value = lines.join('\n');
       };
 
