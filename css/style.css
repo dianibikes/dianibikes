@@ -151,8 +151,15 @@ section { padding: var(--space-5) 0; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(250, 246, 240, 0.92);
-  backdrop-filter: blur(8px);
+  /* No backdrop-filter here on purpose: .primary-nav and .nav-scrim are
+     position:fixed descendants of this header, and backdrop-filter creates a
+     new containing block for fixed-position children per spec. Desktop
+     Chromium doesn't visibly break (the sticky header stays pinned at y:0
+     regardless), but mobile Safari does — the mobile nav drawer renders
+     confined to the header's own box instead of the full viewport, with no
+     scrim overlay. Solid background only; opacity raised slightly to keep
+     the same visual weight the blur was providing. */
+  background: rgba(250, 246, 240, 0.97);
   border-bottom: 1px solid rgba(27, 39, 51, 0.08);
 }
 .header-inner {
