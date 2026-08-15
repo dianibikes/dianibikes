@@ -1,5 +1,5 @@
-// Diani Bikes — Supabase client for the public site (read-only content +
-// public booking inserts, both governed by Row Level Security — see
+// Diani Bikes - Supabase client for the public site (read-only content +
+// public booking inserts, both governed by Row Level Security - see
 // supabase/schema.sql). Same anon/public key used in admin/js/supabase-client.js;
 // it is designed to be exposed in client-side code.
 //
@@ -25,4 +25,4 @@ try {
   Object.keys(window.localStorage).forEach(function (key) {
     if (key.indexOf('dianibikes_admin_') === 0) window.localStorage.removeItem(key);
   });
-} catch (e) { /* storage unavailable — nothing to clean */ }
+} catch (e) { /* storage unavailable - nothing to clean */ }

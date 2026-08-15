@@ -84,7 +84,7 @@
       <button type="button" class="admin-menu-toggle" aria-label="Open menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
       <div>
         <h1>SEO</h1>
-        <p class="admin-topbar-sub" id="seo-count-sub">—</p>
+        <p class="admin-topbar-sub" id="seo-count-sub">-</p>
       </div>
       <div class="admin-topbar-actions">
         <button type="button" class="btn btn-outline btn-sm" id="copy-handoff-btn">Copy Handoff Summary</button>
@@ -93,7 +93,7 @@
 
     <main class="admin-content">
       <p class="placeholder-note" style="display:block; margin-bottom:1.25rem; line-height:1.5;">
-        This site is static HTML with no live backend, so edits here are <strong>drafts saved in this browser only</strong> —
+        This site is static HTML with no live backend, so edits here are <strong>drafts saved in this browser only</strong> -
         they don't change the real pages search engines see. When you're happy with a draft, hit
         <strong>&ldquo;Copy Handoff Summary&rdquo;</strong> and send it to your developer (or paste it back to Claude) to publish
         into the live site.
@@ -201,7 +201,7 @@
     return 'color:var(--color-charcoal-soft);';
   }
 
-  // Only let http(s) and same-site relative URLs become a clickable href —
+  // Only let http(s) and same-site relative URLs become a clickable href -
   // keeps a stored "javascript:" value from running when the link is clicked.
   function safeUrl(url) {
     var u = String(url || '').trim();
@@ -212,7 +212,7 @@
     AdminStore.getAll('seo').then(function (all) {
     var modifiedCount = all.filter(isModified).length;
     document.getElementById('modified-count').textContent = modifiedCount;
-    document.getElementById('seo-count-sub').textContent = all.length + ' pages tracked — ' + modifiedCount + ' with unpublished changes';
+    document.getElementById('seo-count-sub').textContent = all.length + ' pages tracked - ' + modifiedCount + ' with unpublished changes';
 
     var filtered = currentFilter === 'modified' ? all.filter(isModified) : all;
 

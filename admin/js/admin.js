@@ -1,5 +1,5 @@
-// Diani Bikes — Admin console shared library.
-// Data layer (Store) reads/writes a live Supabase database — see
+// Diani Bikes - Admin console shared library.
+// Data layer (Store) reads/writes a live Supabase database - see
 // js/supabase-client.js for the client instance and supabase/schema.sql for
 // the table definitions and RLS policies.
 (function (global) {
@@ -10,7 +10,7 @@
   // Table/column names in the database are snake_case; this layer converts
   // to/from the camelCase property names used throughout the page scripts,
   // so call sites (getAll/getById/upsert/remove) never need to rename
-  // fields — only wrap calls in .then() since they're now async.
+  // fields - only wrap calls in .then() since they're now async.
 
   function uid() {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
@@ -104,7 +104,7 @@
       });
     }
     if (scrim) scrim.addEventListener('click', closeSidebar);
-    // Close on navigating to another section, same as the public site's nav —
+    // Close on navigating to another section, same as the public site's nav -
     // otherwise the drawer is still open (and body scroll still locked) on
     // the page you land on.
     if (sidebar) {
@@ -132,7 +132,7 @@
     toastTimer = setTimeout(function () { el.classList.remove('is-open'); }, 2400);
   }
 
-  // Surfaces a failed Supabase call instead of letting it fail silently —
+  // Surfaces a failed Supabase call instead of letting it fail silently -
   // use as AdminStore.upsert(...).catch(AdminUI.showError).
   function showError(err) {
     var el = document.querySelector('.admin-toast');
@@ -276,7 +276,7 @@
   }
 
   /* ============================== Image upload (Supabase Storage) ============================== */
-  // Uploads to the public "media" bucket and hands back the public URL —
+  // Uploads to the public "media" bucket and hands back the public URL -
   // the DB only ever stores that URL string, never image bytes.
   function initUploadDropzone(dropzone, onFiles) {
     var input = dropzone.querySelector('input[type="file"]');
@@ -355,7 +355,7 @@
   }
 
   function formatDate(iso) {
-    if (!iso) return '—';
+    if (!iso) return '-';
     var d = new Date(iso);
     // Callers drop the result straight into innerHTML, and booking dates
     // originate from the public form, so the unparseable passthrough below
@@ -387,7 +387,7 @@
       var link = e.target.closest('[data-logout]');
       if (!link) return;
       e.preventDefault();
-      // The attribute value is where to land after signing out — "Back to
+      // The attribute value is where to land after signing out - "Back to
       // Site" sends you to the public homepage, "Log Out" to the login screen.
       var dest = link.getAttribute('data-logout') || 'login.html';
       if (window.sb) {

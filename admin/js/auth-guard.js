@@ -1,4 +1,4 @@
-// Diani Bikes — Admin console access gate (Supabase Auth).
+// Diani Bikes - Admin console access gate (Supabase Auth).
 // Hides the page until a valid Supabase session is confirmed, then reveals
 // it; redirects to the login page otherwise. Runs synchronously in <head>,
 // before the rest of the page parses, so gated content never flashes.

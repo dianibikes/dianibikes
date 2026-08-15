@@ -102,7 +102,7 @@
   function nextUrl() {
     var params = new URLSearchParams(window.location.search);
     var requested = params.get('next') || '';
-    // compare on the bare filename only — no scheme, host, path, or query
+    // compare on the bare filename only - no scheme, host, path, or query
     var file = requested.split(/[?#]/)[0];
     return ALLOWED_NEXT.indexOf(file) !== -1 ? file : 'index.html';
   }
@@ -121,7 +121,7 @@
 
   /* ---------- Failed-attempt throttle ----------
      Supabase already rate-limits authentication server-side, and that is the
-     control that actually stops an attacker — this one lives in the browser
+     control that actually stops an attacker - this one lives in the browser
      and anyone determined can clear it. Its job is narrower: stop a shared or
      unattended machine being used to grind guesses through the real form, and
      make the slowdown visible. Backs off 15s, 30s, 60s, 120s… capped at 5min
@@ -135,7 +135,7 @@
       var raw = sessionStorage.getItem(THROTTLE_KEY);
       var v = raw ? JSON.parse(raw) : null;
       if (v && typeof v.fails === 'number' && typeof v.until === 'number') return v;
-    } catch (e) { /* corrupt or unavailable — start clean */ }
+    } catch (e) { /* corrupt or unavailable - start clean */ }
     return { fails: 0, until: 0 };
   }
 
@@ -206,7 +206,7 @@
       if (result.error) {
         showError(result.error.message);
       } else {
-        showSuccess('If that email has an account, a reset link is on its way — check your inbox.');
+        showSuccess('If that email has an account, a reset link is on its way - check your inbox.');
       }
     }).catch(function () {
       forgotLink.textContent = 'Forgot password?';

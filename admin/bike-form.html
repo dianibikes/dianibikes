@@ -109,7 +109,7 @@
                 </div>
                 <div class="form-field">
                   <label for="f-tag-label">Tag Label</label>
-                  <input type="text" id="f-tag-label" placeholder="e.g. Electric — shown as the badge on the photo">
+                  <input type="text" id="f-tag-label" placeholder="e.g. Electric - shown as the badge on the photo">
                   <p class="form-note">Leave blank to use the bike name.</p>
                 </div>
               </div>
@@ -277,7 +277,7 @@
       return;
     }
     var record = {
-      // Keep the existing slug on edit — it is the qty_<id> field name in the
+      // Keep the existing slug on edit - it is the qty_<id> field name in the
       // rental booking form, so renaming a bike must not orphan past bookings.
       id: existing ? existing.id : null,
       name: name,

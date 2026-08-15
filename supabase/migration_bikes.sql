@@ -1,5 +1,5 @@
 -- ==========================================================================
--- Diani Bikes — "bikes" table (rental fleet + rates, managed from the admin)
+-- Diani Bikes - "bikes" table (rental fleet + rates, managed from the admin)
 -- Run this ONCE in the Supabase SQL Editor.
 -- ==========================================================================
 
@@ -28,12 +28,12 @@ insert into bikes (id, name, tag_label, description, image, half_day_rate, full_
    'A smooth, easy ride perfect for covering long distances and tackling hills with ease.',
    '../images/rental-electric.svg', 1500, 2000, 1),
   ('mountain', 'Mountain Bike', 'Mountain',
-   'Built for rugged terrain and adventurous trails — for thrill-seekers and off-road enthusiasts.',
+   'Built for rugged terrain and adventurous trails - for thrill-seekers and off-road enthusiasts.',
    '../images/rental-mountain.svg', 1000, 1500, 2),
   ('manual', 'Manual Bike', 'Manual',
-   'A reliable, enjoyable way to explore — perfect for leisurely rides along the beach or through town.',
+   'A reliable, enjoyable way to explore - perfect for leisurely rides along the beach or through town.',
    '../images/rental-manual.svg', 500, 750, 3),
   ('kids', 'Kids Bike', 'Kids',
-   'Designed for safety and fun, perfect for young riders — explore together and create memories.',
+   'Designed for safety and fun, perfect for young riders - explore together and create memories.',
    '../images/rental-kids.svg', 750, 1000, 4)
 on conflict (id) do nothing;

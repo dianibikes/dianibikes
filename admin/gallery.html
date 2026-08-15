@@ -84,7 +84,7 @@
       <button type="button" class="admin-menu-toggle" aria-label="Open menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
       <div>
         <h1>Gallery</h1>
-        <p class="admin-topbar-sub" id="gallery-count-sub">—</p>
+        <p class="admin-topbar-sub" id="gallery-count-sub">-</p>
       </div>
     </header>
 
@@ -237,7 +237,7 @@
       tags: []
     }).then(function () {
       renderGallery();
-      AdminUI.toast('Photo uploaded — tap a tag below to categorize it');
+      AdminUI.toast('Photo uploaded - tap a tag below to categorize it');
     }).catch(AdminUI.showError);
   });
 

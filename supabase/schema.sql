@@ -1,5 +1,5 @@
 -- ==========================================================================
--- Diani Bikes — Supabase schema, RLS policies, and storage bucket
+-- Diani Bikes - Supabase schema, RLS policies, and storage bucket
 -- Run this ONCE in the Supabase SQL Editor, before running seed_data.sql.
 -- ==========================================================================
 
@@ -144,7 +144,7 @@ create policy "public read" on faqs     for select using (true);
 create policy "admin write" on faqs     for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
 
 -- Bookings: the public site can create a booking (contact/booking forms) but
--- never read, edit, or delete any booking — only the logged-in admin can.
+-- never read, edit, or delete any booking - only the logged-in admin can.
 create policy "public insert" on bookings for insert with check (true);
 create policy "admin manage"  on bookings for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
 

@@ -1,13 +1,13 @@
-// Diani Bikes — Supabase client (used for admin auth + data).
+// Diani Bikes - Supabase client (used for admin auth + data).
 //
-// The anon/public key is designed to be exposed in client-side code —
+// The anon/public key is designed to be exposed in client-side code -
 // Supabase verifies credentials on their server, this key alone grants
 // no access to anything protected by Row Level Security. Every rule that
 // actually protects data lives in the database (supabase/schema.sql), not
 // in this file or in any page script, so a tampered client gains nothing.
 //
 // Auth session storage: this is a static site with no server of its own, so
-// there is no way to use an httpOnly cookie — the token has to live somewhere
+// there is no way to use an httpOnly cookie - the token has to live somewhere
 // JavaScript can reach. sessionStorage is used instead of the library default
 // (localStorage) so the session dies when the tab closes rather than sitting
 // on disk indefinitely on a shared or stolen machine.
@@ -17,7 +17,7 @@
     storage.setItem('__probe__', '1');
     storage.removeItem('__probe__');
   } catch (e) {
-    storage = undefined; // private mode / storage blocked — fall back to in-memory
+    storage = undefined; // private mode / storage blocked - fall back to in-memory
   }
 
   window.sb = supabase.createClient(
@@ -30,7 +30,7 @@
         autoRefreshToken: true,
         // Left on the implicit flow deliberately. PKCE would be preferable in
         // general, but it stores a code_verifier at request time and requires
-        // it back at redemption time — and a reset email opens in a brand new
+        // it back at redemption time - and a reset email opens in a brand new
         // tab, where sessionStorage is empty. PKCE + sessionStorage would mean
         // every password reset fails. reset-password.html strips the token
         // from the URL instead (see the history.replaceState there).
@@ -52,5 +52,5 @@
     Object.keys(window.localStorage).forEach(function (key) {
       if (/^sb-.*-auth-token/.test(key)) window.localStorage.removeItem(key);
     });
-  } catch (e) { /* storage unavailable — nothing to clean */ }
+  } catch (e) { /* storage unavailable - nothing to clean */ }
 })();

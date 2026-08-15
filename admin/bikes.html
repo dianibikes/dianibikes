@@ -84,7 +84,7 @@
       <button type="button" class="admin-menu-toggle" aria-label="Open menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
       <div>
         <h1>Bikes &amp; Rates</h1>
-        <p class="admin-topbar-sub" id="bikes-count-sub">—</p>
+        <p class="admin-topbar-sub" id="bikes-count-sub">-</p>
       </div>
       <div class="admin-topbar-actions">
         <a href="bike-form.html" class="btn btn-primary btn-sm">+ Add Bike</a>
@@ -152,7 +152,7 @@
 <script src="js/admin.js"></script>
 <script>
   function money(value) {
-    if (value === null || value === undefined || value === '') return '—';
+    if (value === null || value === undefined || value === '') return '-';
     return 'Kes. ' + Number(value).toLocaleString('en-KE');
   }
 

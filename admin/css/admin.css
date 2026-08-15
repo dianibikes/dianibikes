@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Diani Bikes — Admin console
+   Diani Bikes - Admin console
    Built on top of ../css/style.css design tokens (colors, fonts, .btn, .tag,
    .form-field). This file adds the admin-only layout shell + components.
    ========================================================================== */
@@ -9,8 +9,8 @@ body { background: var(--color-sand-deep); }
 /* ---------- Shell layout ---------- */
 .admin-shell { min-height: 100vh; }
 
-/* Below 960px the sidebar becomes an off-canvas drawer — same slide-in pattern
-   as the public site's .primary-nav — opened by .admin-menu-toggle in the
+/* Below 960px the sidebar becomes an off-canvas drawer - same slide-in pattern
+   as the public site's .primary-nav - opened by .admin-menu-toggle in the
    topbar. It was previously just `display:none` with no way to open it at
    all; the only mobile navigation was the bottom icon strip, which cuts off
    after ~5 of 11 items with no scroll indicator. */
@@ -133,7 +133,7 @@ body { background: var(--color-sand-deep); }
 }
 .admin-bottom-nav::-webkit-scrollbar { display: none; }
 @media (min-width: 960px) { .admin-bottom-nav { display: none; } }
-/* The strip holds 11 items and only ~5 fit on a phone width — this at least
+/* The strip holds 11 items and only ~5 fit on a phone width - this at least
    signals there's more to scroll to. The drawer (.admin-menu-toggle) is the
    way to reach everything without scrolling at all. */
 @media (max-width: 959px) {
@@ -178,7 +178,7 @@ body { background: var(--color-sand-deep); }
 .admin-topbar-actions { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
 
 .admin-content { padding: 1.5rem 1.25rem 3rem; max-width: 1180px; }
-/* The bookings table is the one genuinely wide layout in the admin — it has 7
+/* The bookings table is the one genuinely wide layout in the admin - it has 7
    columns and needs the whole window. Everything else keeps the 1180px measure,
    since stretching text inputs across a wide monitor makes forms harder to read. */
 body[data-page="bookings"] .admin-content { max-width: none; }
@@ -321,11 +321,11 @@ body[data-page="bookings"] .admin-content { max-width: none; }
 .payment-status-select[data-pay="Paid Deposit"] { background: rgba(245,197,24,0.2); color: #8A6B00; }
 .payment-status-select[data-pay="Paid in Full"] { background: rgba(31,157,85,0.12); color: #1F9D55; }
 
-/* Keep the three row buttons on one line — they were wrapping onto a second row
+/* Keep the three row buttons on one line - they were wrapping onto a second row
    and stretching every row's height. They wrap again in the mobile card layout. */
 .row-actions { display: flex; gap: 0.3rem; flex-wrap: nowrap; }
 .booking-note { font-size: 0.74rem; color: var(--color-charcoal-soft); margin-top: 0.2rem; display: block; }
-/* Dates read as one unit — no reason to break "2 Sept" onto its own line now
+/* Dates read as one unit - no reason to break "2 Sept" onto its own line now
    that the table has the room. Details keeps the slack instead. */
 .admin-table td[data-label="Date"] { white-space: nowrap; }
 
@@ -362,7 +362,7 @@ body[data-page="bookings"] .admin-content { max-width: none; }
   }
 
   /* Customer and Details hold multi-line content (name/email/phone,
-     destination/bike breakdown) — the label-left, value-right split above
+     destination/bike breakdown) - the label-left, value-right split above
      works for one-line values but turns multi-line content into two cramped,
      independently-flexed columns since every child element becomes its own
      flex item. These two get the label as a caption above instead. */

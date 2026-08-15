@@ -1,11 +1,11 @@
-// Diani Bikes — shared site behaviour: mobile nav, dropdown, testimonials,
+// Diani Bikes - shared site behaviour: mobile nav, dropdown, testimonials,
 // gallery lightbox + filter, FAQ accordion. Vanilla JS, no dependencies.
 (function () {
   'use strict';
 
   /* ---------- Public data reads (Supabase) ----------
      Read-only access to public content tables (tours, bikes, team, gallery,
-     partners, reviews, faqs) — anon key only, allowed by the "public read"
+     partners, reviews, faqs) - anon key only, allowed by the "public read"
      Row Level Security policies in supabase/schema.sql. Bookings use a
      separate public-insert-only policy (see dbInsertBooking). */
   function toCamelKey(k) { return k.replace(/_([a-z])/g, function (_, c) { return c.toUpperCase(); }); }
@@ -196,7 +196,7 @@
      card thumbnails/tags ----------
      Detail pages are tagged with data-tour-id="<tours.id slug>". Card
      thumbnails (listing pages and "You Might Also Like" sections) need no
-     tagging — each card's own title link already encodes the slug
+     tagging - each card's own title link already encodes the slug
      (href="camel-adventure.html"), so it's read straight off that instead.
      Category/location tags are rebuilt from the live record everywhere, so
      editing a tour in the admin (category, location tags) is reflected
@@ -257,7 +257,7 @@
         if (tour) {
           var catUrl = CATEGORY_URLS[tour.category];
 
-          // Hero breadcrumb + eyebrow — these declare the tour's category
+          // Hero breadcrumb + eyebrow - these declare the tour's category
           // just as prominently as the tags row, so they need to stay in
           // sync with it (both driven by the same tour.category).
           var breadcrumb = tourRoot.querySelector('.breadcrumb');
@@ -334,7 +334,7 @@
       });
 
       // Category listing pages (Bike Tours, Tuk Tuk Experience, Marine
-      // Excursions, Forest Excursions) — the grid is empty in the HTML and
+      // Excursions, Forest Excursions) - the grid is empty in the HTML and
       // fully rendered from whichever tours currently have this category,
       // so recategorizing a tour in the admin moves its card automatically.
       tourCategoryGrids.forEach(function (grid) {
@@ -346,7 +346,7 @@
       });
 
       // Homepage "Browse by Location or Activity" filter. Location and
-      // category are independent — each defaults to "All" (no constraint),
+      // category are independent - each defaults to "All" (no constraint),
       // so picking just one is enough to narrow results; picking both
       // intersects them. Clicking a filter button only changes the selection;
       // results only render when "View Results" is clicked, and nothing shows
@@ -371,7 +371,7 @@
             resultsGrid.innerHTML = matches.map(tourCardHtml).join('');
           } else {
             resultsGrid.style.display = 'none';
-            emptyMsg.textContent = 'No activities match that combination yet — try a different location or activity type.';
+            emptyMsg.textContent = 'No activities match that combination yet - try a different location or activity type.';
             emptyMsg.style.display = 'block';
           }
         }
@@ -388,7 +388,7 @@
           if (locBtn) activeLocation = locBtn.getAttribute('data-explore-location');
           if (catBtn) activeCategory = catBtn.getAttribute('data-explore-category');
           // Deliberately no auto-render here, even if results are already
-          // showing from a previous search — changing a filter never updates
+          // showing from a previous search - changing a filter never updates
           // results on its own, only clicking "View Results" does.
         });
 
@@ -695,7 +695,7 @@
   /* ---------- FAQ accordion ----------
      Delegated on document rather than bound per-button, since the About/
      Rentals FAQ content is replaced asynchronously once the Supabase read
-     resolves (see dbGetAll('faqs') above) — direct bindings would be lost
+     resolves (see dbGetAll('faqs') above) - direct bindings would be lost
      when that innerHTML swap happens. */
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('.faq-question');

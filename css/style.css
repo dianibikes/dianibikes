@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Diani Bikes — Design System
+   Diani Bikes - Design System
    Primary: brand blue (CTAs, links) · Secondary: brand pink (accents only)
    Tertiary: brand yellow (badges/small highlights only) · one button pattern
    ========================================================================== */
@@ -155,7 +155,7 @@ section { padding: var(--space-5) 0; }
      position:fixed descendants of this header, and backdrop-filter creates a
      new containing block for fixed-position children per spec. Desktop
      Chromium doesn't visibly break (the sticky header stays pinned at y:0
-     regardless), but mobile Safari does — the mobile nav drawer renders
+     regardless), but mobile Safari does - the mobile nav drawer renders
      confined to the header's own box instead of the full viewport, with no
      scrim overlay. Solid background only; opacity raised slightly to keep
      the same visual weight the blur was providing. */
@@ -336,7 +336,7 @@ section { padding: var(--space-5) 0; }
 .hero-content p.lead { max-width: 560px; font-size: 1.15rem; color: #F1EEE8; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: var(--space-3); }
 /* The default outline button is charcoal-on-transparent, which disappears over
-   the hero photo — and the homepage hero now cycles five different images, so
+   the hero photo - and the homepage hero now cycles five different images, so
    it needs to hold up over all of them. Frosted panel, same treatment as the
    tags over tour card photos. */
 .hero .btn-outline {

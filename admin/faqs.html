@@ -84,7 +84,7 @@
       <button type="button" class="admin-menu-toggle" aria-label="Open menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
       <div>
         <h1>FAQs</h1>
-        <p class="admin-topbar-sub" id="faqs-count-sub">—</p>
+        <p class="admin-topbar-sub" id="faqs-count-sub">-</p>
       </div>
       <div class="admin-topbar-actions">
         <a href="faq-form.html" class="btn btn-primary btn-sm" id="add-faq-link">+ Add FAQ</a>
@@ -92,7 +92,7 @@
     </header>
 
     <main class="admin-content">
-      <p class="placeholder-note" style="display:block; margin-bottom:1.25rem;">FAQs shown here appear in the F.A.Q. accordion on the page you assign them to. Each tour's own "Common Questions" are managed from that tour's edit form instead — see Tours &amp; Excursions.</p>
+      <p class="placeholder-note" style="display:block; margin-bottom:1.25rem;">FAQs shown here appear in the F.A.Q. accordion on the page you assign them to. Each tour's own "Common Questions" are managed from that tour's edit form instead - see Tours &amp; Excursions.</p>
       <div class="admin-filters" id="page-filters">
         <button class="filter-btn active" data-page-tag="all">All Pages</button>
         <button class="filter-btn" data-page-tag="about">About</button>
@@ -163,7 +163,7 @@
   function renderFaqs() {
     AdminStore.getAll('faqs').then(function (all) {
     // Tour FAQs ("Common Questions") are managed from each tour's own edit
-    // form instead — this list stays scoped to real site pages only.
+    // form instead - this list stays scoped to real site pages only.
     all = all.filter(function (f) { return SITE_PAGES.indexOf(f.page) !== -1; });
     var filtered = currentPageTag === 'all' ? all : all.filter(function (f) { return f.page === currentPageTag; });
 
