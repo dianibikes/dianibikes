@@ -138,6 +138,42 @@
     </div>
   </section>
 
+  <section class="bg-white" id="explore">
+    <div class="container">
+      <div class="section-head center">
+        <p class="eyebrow">Find Your Adventure</p>
+        <h2>Browse by Location or Activity</h2>
+        <p>Pick either one — choose a location to see everything we offer there, or an activity type to see it across every location.</p>
+      </div>
+      <div class="explore-filters">
+        <div class="filter-group">
+          <span class="filter-group-label">Location</span>
+          <div class="gallery-filter">
+            <button class="filter-btn active" data-explore-location="all">All</button>
+            <button class="filter-btn" data-explore-location="Diani">Diani</button>
+            <button class="filter-btn" data-explore-location="Watamu">Watamu</button>
+            <button class="filter-btn" data-explore-location="Kilifi">Kilifi</button>
+          </div>
+        </div>
+        <div class="filter-group">
+          <span class="filter-group-label">Activity Type</span>
+          <div class="gallery-filter">
+            <button class="filter-btn active" data-explore-category="all">All</button>
+            <button class="filter-btn" data-explore-category="Bike Tours">Bike Tours</button>
+            <button class="filter-btn" data-explore-category="Tuk Tuk Experience">Tuk Tuk</button>
+            <button class="filter-btn" data-explore-category="Marine Excursions">Marine</button>
+            <button class="filter-btn" data-explore-category="Forest Excursions">Forest</button>
+          </div>
+        </div>
+      </div>
+      <div class="section-head center" style="margin-bottom: var(--space-3);">
+        <button type="button" class="btn btn-primary" id="explore-view-btn">View Results</button>
+      </div>
+      <div class="card-grid cols-3" id="explore-results" style="display:none;"></div>
+      <p id="explore-empty" style="text-align:center; color:var(--color-charcoal-soft); font-size:0.92rem;">Choose a location and/or an activity type above, then click "View Results".</p>
+    </div>
+  </section>
+
   <section class="bg-white">
     <div class="container">
       <div class="section-head center">

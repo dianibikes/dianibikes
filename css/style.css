@@ -536,6 +536,12 @@ section { padding: var(--space-5) 0; }
 }
 .filter-btn.active { background: var(--color-blue); border-color: var(--color-blue); color: var(--color-white); }
 
+/* ---------- Homepage explore filter (location / activity type) ---------- */
+.explore-filters { display: flex; flex-direction: column; gap: var(--space-3); align-items: center; margin-bottom: var(--space-4); }
+.filter-group { text-align: center; }
+.filter-group-label { display: block; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-charcoal-soft); margin-bottom: 0.5rem; }
+.filter-group .gallery-filter { justify-content: center; margin-bottom: 0; }
+
 .lightbox {
   position: fixed;
   top: 0;

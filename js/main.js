@@ -207,7 +207,8 @@
   var tourRoot = document.querySelector('[data-tour-id]');
   var tourCards = document.querySelectorAll('.tour-card');
   var tourCategoryGrids = document.querySelectorAll('[data-tour-category]');
-  if (tourRoot || tourCards.length || tourCategoryGrids.length) {
+  var exploreSection = document.querySelector('#explore');
+  if (tourRoot || tourCards.length || tourCategoryGrids.length || exploreSection) {
     var CATEGORY_URLS = {
       'Bike Tours': 'bike-tours.html',
       'Marine Excursions': 'marine-excursions.html',
@@ -343,6 +344,56 @@
           .sort(function (a, b) { return (a.createdAt || '').localeCompare(b.createdAt || ''); });
         if (matches.length) grid.innerHTML = matches.map(tourCardHtml).join('');
       });
+
+      // Homepage "Browse by Location or Activity" filter. Location and
+      // category are independent — each defaults to "All" (no constraint),
+      // so picking just one is enough to narrow results; picking both
+      // intersects them. Clicking a filter button only changes the selection;
+      // results only render when "View Results" is clicked, and nothing shows
+      // before that first click.
+      if (exploreSection) {
+        var resultsGrid = exploreSection.querySelector('#explore-results');
+        var emptyMsg = exploreSection.querySelector('#explore-empty');
+        var viewBtn = exploreSection.querySelector('#explore-view-btn');
+        var activeLocation = 'all';
+        var activeCategory = 'all';
+
+        function renderExploreResults() {
+          var matches = tours.filter(function (t) {
+            var locOk = activeLocation === 'all' || (t.locationTags || []).indexOf(activeLocation) !== -1;
+            var catOk = activeCategory === 'all' || t.category === activeCategory;
+            return locOk && catOk;
+          }).sort(function (a, b) { return (a.createdAt || '').localeCompare(b.createdAt || ''); });
+
+          if (matches.length) {
+            resultsGrid.style.display = '';
+            emptyMsg.style.display = 'none';
+            resultsGrid.innerHTML = matches.map(tourCardHtml).join('');
+          } else {
+            resultsGrid.style.display = 'none';
+            emptyMsg.textContent = 'No activities match that combination yet — try a different location or activity type.';
+            emptyMsg.style.display = 'block';
+          }
+        }
+
+        exploreSection.addEventListener('click', function (e) {
+          var locBtn = e.target.closest('[data-explore-location]');
+          var catBtn = e.target.closest('[data-explore-category]');
+          if (!locBtn && !catBtn) return;
+
+          var group = (locBtn || catBtn).closest('.gallery-filter');
+          group.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
+          (locBtn || catBtn).classList.add('active');
+
+          if (locBtn) activeLocation = locBtn.getAttribute('data-explore-location');
+          if (catBtn) activeCategory = catBtn.getAttribute('data-explore-category');
+          // Deliberately no auto-render here, even if results are already
+          // showing from a previous search — changing a filter never updates
+          // results on its own, only clicking "View Results" does.
+        });
+
+        viewBtn.addEventListener('click', renderExploreResults);
+      }
     });
   }
 
