@@ -113,6 +113,14 @@
                   <input type="text" id="f-title" placeholder="e.g. Village Guided Bike Tour" required>
                 </div>
                 <div class="form-field">
+                  <label for="f-price-resident">Resident Price (Kes.) <span style="font-weight:400; color:var(--color-charcoal-soft);">(optional - for Kenyan/EAC residents; leave blank to hide it)</span></label>
+                  <input type="number" id="f-price-resident" min="0" step="50" placeholder="e.g. 2000">
+                </div>
+                <div class="form-field">
+                  <label for="f-price-nonresident">Non-Resident Price (USD) <span style="font-weight:400; color:var(--color-charcoal-soft);">(optional - for foreign visitors; leave blank to hide it)</span></label>
+                  <input type="number" id="f-price-nonresident" min="0" step="5" placeholder="e.g. 50">
+                </div>
+                <div class="form-field">
                   <label>Location Tags</label>
                   <div class="chip-toggle-group" id="location-group">
                     <button type="button" class="chip-toggle" data-value="Diani">Diani</button>
@@ -185,6 +193,22 @@
                 <div class="hint">PNG or JPG, multiple allowed</div>
               </div>
               <div class="image-preview-grid" id="tour-image-preview"></div>
+            </div>
+
+            <div class="form-card">
+              <h3>Special Offer</h3>
+              <div class="form-field">
+                <label for="f-offer-percent">Percent Off <span style="font-weight:400; color:var(--color-charcoal-soft);">(optional - leave blank for no offer)</span></label>
+                <input type="number" id="f-offer-percent" min="1" max="95" step="1" placeholder="e.g. 20">
+              </div>
+              <div class="form-field">
+                <label for="f-offer-start">Offer Starts <span style="font-weight:400; color:var(--color-charcoal-soft);">(optional - runs immediately if blank)</span></label>
+                <input type="date" id="f-offer-start">
+              </div>
+              <div class="form-field">
+                <label for="f-offer-end">Offer Ends <span style="font-weight:400; color:var(--color-charcoal-soft);">(optional - runs until you clear Percent Off if blank)</span></label>
+                <input type="date" id="f-offer-end">
+              </div>
             </div>
 
             <div class="form-card">
@@ -333,6 +357,11 @@
       AdminUI.setActiveChips(categoryGroup, [existing.category]);
       AdminUI.setActiveChips(locationGroup, existing.locationTags);
       document.getElementById('f-title').value = existing.title;
+      document.getElementById('f-price-resident').value = existing.residentPrice == null ? '' : existing.residentPrice;
+      document.getElementById('f-price-nonresident').value = existing.nonResidentPrice == null ? '' : existing.nonResidentPrice;
+      document.getElementById('f-offer-percent').value = existing.offerPercent == null ? '' : existing.offerPercent;
+      document.getElementById('f-offer-start').value = existing.offerStartsOn || '';
+      document.getElementById('f-offer-end').value = existing.offerEndsOn || '';
       document.getElementById('f-description').value = existing.description;
       document.getElementById('f-itinerary').value = existing.itinerary || '';
       document.getElementById('f-status').value = existing.status || 'Published';
@@ -347,6 +376,13 @@
   }
   renderImagePreviews();
 
+  function numOrNull(id) {
+    var raw = document.getElementById(id).value.trim();
+    if (raw === '') return null;
+    var n = Number(raw);
+    return isNaN(n) ? null : n;
+  }
+
   AdminUI.initInlineValidation(document.getElementById('tour-form'));
   document.getElementById('tour-form').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -360,6 +396,11 @@
       id: existing ? existing.id : null,
       category: category,
       title: title,
+      residentPrice: numOrNull('f-price-resident'),
+      nonResidentPrice: numOrNull('f-price-nonresident'),
+      offerPercent: numOrNull('f-offer-percent'),
+      offerStartsOn: document.getElementById('f-offer-start').value || null,
+      offerEndsOn: document.getElementById('f-offer-end').value || null,
       locationTags: AdminUI.getActiveChips(locationGroup),
       description: document.getElementById('f-description').value.trim(),
       itinerary: document.getElementById('f-itinerary').value.trim(),

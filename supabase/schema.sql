@@ -11,6 +11,11 @@ create table if not exists tours (
   id            text primary key,
   category      text not null,
   title         text not null,
+  resident_price     int,  -- Kes, for Kenyan/EAC residents
+  non_resident_price int,  -- USD, for foreign visitors
+  offer_percent      int,  -- e.g. 20 for 20% off both prices above; null = no offer
+  offer_starts_on    date, -- optional; offer is active immediately if blank
+  offer_ends_on      date, -- optional; offer never expires on its own if blank
   location_tags text[] default '{}',
   description   text,
   itinerary     text,

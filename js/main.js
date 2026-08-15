@@ -143,7 +143,8 @@
      day prices can be changed from the admin console. Each bike's slug (its
      primary key) becomes the qty_<slug> form field name, which the booking
      capture below and contact.html's prefill both read back generically. */
-  function money(value) {
+  function money(value, currency) {
+    if (currency === 'USD') return '$' + Number(value).toLocaleString('en-US');
     return 'Kes. ' + Number(value).toLocaleString('en-KE');
   }
   function rateLine(bike) {
@@ -221,11 +222,36 @@
       return '';
     }
     function locationTagClass(loc) { return loc === 'Tuk Tuk' ? 'tag-yellow' : ''; }
+    // An offer is "active" only within its optional start/end date window -
+    // once offerEndsOn passes, the discount drops off the site on its own
+    // without the admin needing to remember to clear offerPercent.
+    function isOfferActive(tour) {
+      if (tour.offerPercent == null) return false;
+      var today = new Date().toISOString().slice(0, 10);
+      if (tour.offerStartsOn && today < tour.offerStartsOn) return false;
+      if (tour.offerEndsOn && today > tour.offerEndsOn) return false;
+      return true;
+    }
+    function discountedPrice(value, percent) {
+      return Math.round(value * (1 - percent / 100));
+    }
+    function tourPriceLine(tour) {
+      var offer = isOfferActive(tour);
+      function priceHtml(value, currency) {
+        if (!offer) return money(value, currency);
+        return '<s>' + money(value, currency) + '</s> ' + money(discountedPrice(value, tour.offerPercent), currency);
+      }
+      var parts = [];
+      if (tour.residentPrice != null) parts.push('Resident: ' + priceHtml(tour.residentPrice));
+      if (tour.nonResidentPrice != null) parts.push('Non-Resident: ' + priceHtml(tour.nonResidentPrice, 'USD'));
+      return parts.join('  ·  ');
+    }
     function realPhotosOf(tour) {
       return (tour.images || []).filter(function (src) { return /^https?:\/\//.test(src); });
     }
     function tourCardTagsHtml(tour) {
-      return '<span class="tag ' + categoryTagClass(tour.category) + '">' + escapeHtml(tour.category) + '</span>' +
+      return (isOfferActive(tour) ? '<span class="tag tag-offer">' + tour.offerPercent + '% OFF</span>' : '') +
+        '<span class="tag ' + categoryTagClass(tour.category) + '">' + escapeHtml(tour.category) + '</span>' +
         (tour.locationTags || []).map(function (loc) {
           return '<span class="tag ' + locationTagClass(loc) + '">' + escapeHtml(loc) + '</span>';
         }).join('');
@@ -240,6 +266,7 @@
         '<div class="tour-card-body">' +
           '<h3><a href="' + tour.id + '.html">' + escapeHtml(tour.title) + '</a></h3>' +
           '<p>' + escapeHtml(tour.description || '') + '</p>' +
+          (tourPriceLine(tour) ? '<p class="tour-card-price">' + tourPriceLine(tour) + '</p>' : '') +
           '<div class="tour-card-footer">' +
             '<a href="' + tour.id + '.html#booking-form" class="btn btn-primary btn-sm">Book Now</a>' +
             '<a href="' + tour.id + '.html" class="btn-link">View Details</a>' +
@@ -248,9 +275,12 @@
       '</article>';
     }
 
-    dbGetAll('tours').then(function (tours) {
+    dbGetAll('tours').then(function (allTours) {
+      var tours = allTours.filter(function (t) { return t.status !== 'Draft'; });
       var byId = {};
       tours.forEach(function (t) { byId[t.id] = t; });
+      var byIdAll = {};
+      allTours.forEach(function (t) { byIdAll[t.id] = t; });
 
       if (tourRoot) {
         var tour = byId[tourRoot.getAttribute('data-tour-id')];
@@ -272,11 +302,19 @@
             var catTagHtml = catUrl
               ? '<a href="' + catUrl + '" class="tag ' + categoryTagClass(tour.category) + '">' + escapeHtml(tour.category) + '</a>'
               : '<span class="tag ' + categoryTagClass(tour.category) + '">' + escapeHtml(tour.category) + '</span>';
-            tagsRow.innerHTML = catTagHtml + (tour.locationTags || []).map(function (loc) {
+            var offerTagHtml = isOfferActive(tour) ? '<span class="tag tag-offer">' + tour.offerPercent + '% OFF</span>' : '';
+            tagsRow.innerHTML = offerTagHtml + catTagHtml + (tour.locationTags || []).map(function (loc) {
               return loc === 'Tuk Tuk'
                 ? '<a href="tuk-tuk.html" class="tag tag-yellow">Tuk Tuk</a>'
                 : '<span class="tag">' + escapeHtml(loc) + '</span>';
             }).join('');
+          }
+
+          var priceEl = tourRoot.querySelector('[data-tour-price]');
+          if (priceEl) {
+            var line = tourPriceLine(tour);
+            if (line) { priceEl.innerHTML = line; priceEl.style.display = ''; }
+            else priceEl.style.display = 'none';
           }
 
           // Short summary (also used as the card blurb) + optional longer
@@ -321,7 +359,13 @@
         if (!link) return;
         var slug = (link.getAttribute('href') || '').replace(/#.*$/, '').replace(/\.html$/, '');
         var cardTour = byId[slug];
-        if (!cardTour) return;
+        if (!cardTour) {
+          // Hand-written cards (e.g. "You Might Also Like") that point at a
+          // tour taken back to Draft in the admin shouldn't linger on the
+          // front end just because their markup is baked into the page.
+          if (byIdAll[slug] && byIdAll[slug].status === 'Draft') card.remove();
+          return;
+        }
 
         var tagsEl = card.querySelector('.tour-card-tags');
         if (tagsEl) tagsEl.innerHTML = tourCardTagsHtml(cardTour);
@@ -330,6 +374,23 @@
         if (photo) {
           var img = card.querySelector('.tour-card-media img');
           if (img) { img.src = photo; img.alt = cardTour.title; }
+        }
+
+        // Hand-written cards (e.g. "You Might Also Like") have no price
+        // markup baked in, so add or drop a price line here to match
+        // whatever's rendered by tourCardHtml() for JS-built grids.
+        var body = card.querySelector('.tour-card-body');
+        var priceEl = body && body.querySelector('.tour-card-price');
+        var line = tourPriceLine(cardTour);
+        if (line) {
+          if (!priceEl && body) {
+            priceEl = document.createElement('p');
+            priceEl.className = 'tour-card-price';
+            body.insertBefore(priceEl, body.querySelector('.tour-card-footer'));
+          }
+          if (priceEl) priceEl.innerHTML = line;
+        } else if (priceEl) {
+          priceEl.remove();
         }
       });
 

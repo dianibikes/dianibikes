@@ -145,6 +145,7 @@ section { padding: var(--space-5) 0; }
 .tag + .tag { margin-left: 0.4em; }
 .tag-yellow { background: rgba(245, 197, 24, 0.18); color: #8A6B00; }
 .tag-blue { background: rgba(30, 111, 217, 0.1); color: var(--color-blue); }
+.tag-offer { background: var(--color-pink); color: var(--color-white); }
 
 /* ---------- Header / Nav ---------- */
 .site-header {
@@ -393,11 +394,14 @@ section { padding: var(--space-5) 0; }
 .tour-card:hover .tour-card-media img { transform: scale(1.06); }
 .tour-card-tags { position: absolute; top: 0.9rem; left: 0.9rem; display: flex; gap: 0.4rem; flex-wrap: wrap; }
 .tour-card-tags .tag { backdrop-filter: blur(4px); background: rgba(255,255,255,0.88); color: var(--color-charcoal); }
+.tour-card-tags .tag-offer { backdrop-filter: none; background: var(--color-pink); color: var(--color-white); }
 .tour-card-body { padding: 1.4rem; display: flex; flex-direction: column; gap: 0.6rem; flex: 1; }
 .tour-card-body h3 { margin-bottom: 0; }
 .tour-card-body h3 a { color: inherit; text-decoration: none; }
 .tour-card-body h3 a:hover { color: var(--color-blue); }
 .tour-card-body p { color: var(--color-charcoal-soft); font-size: 0.95rem; margin-bottom: 0; flex: 1; }
+.tour-card-price { color: var(--color-charcoal); font-weight: 700; font-size: 1rem; flex: 0; }
+.tour-card-price s, .tour-price-badge s { color: var(--color-charcoal-soft); font-weight: 400; margin-right: 0.3em; }
 .tour-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 0.4rem; }
 
 .card-grid.single { grid-template-columns: 1fr; }
@@ -837,6 +841,7 @@ section { padding: var(--space-5) 0; }
   padding: 1.5rem;
 }
 .sidebar-card h3, .sidebar-card h4 { margin-bottom: 1rem; }
+.tour-price-badge { font-size: 1.3rem; font-weight: 700; color: var(--color-blue); margin: -0.3rem 0 1rem; }
 .sidebar-card.muted { background: var(--color-sand-deep); box-shadow: none; }
 .sidebar-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; font-size: 0.88rem; color: var(--color-charcoal-soft); }
 .sidebar-list li { display: flex; gap: 0.5rem; align-items: flex-start; }

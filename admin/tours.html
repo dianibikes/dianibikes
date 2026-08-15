@@ -159,6 +159,24 @@
 <script>
   var currentFilter = 'all';
 
+  function money(value, currency) {
+    if (currency === 'USD') return '$' + Number(value).toLocaleString('en-US');
+    return 'Kes. ' + Number(value).toLocaleString('en-KE');
+  }
+  function priceLabel(tour) {
+    var parts = [];
+    if (tour.residentPrice != null) parts.push(money(tour.residentPrice));
+    if (tour.nonResidentPrice != null) parts.push(money(tour.nonResidentPrice, 'USD'));
+    return parts.join(' / ');
+  }
+  function isOfferActive(tour) {
+    if (tour.offerPercent == null) return false;
+    var today = new Date().toISOString().slice(0, 10);
+    if (tour.offerStartsOn && today < tour.offerStartsOn) return false;
+    if (tour.offerEndsOn && today > tour.offerEndsOn) return false;
+    return true;
+  }
+
   function renderTours() {
     AdminStore.getAll('tours').then(function (all) {
     all.sort(function (a, b) { return a.title.localeCompare(b.title); });
@@ -185,8 +203,9 @@
         '<div class="info">' +
           '<h4>' + AdminUI.escapeHtml(tour.title) + '</h4>' +
           '<div class="meta">' +
+            (isOfferActive(tour) ? '<span class="tag">' + tour.offerPercent + '% OFF</span>' : '') +
             '<span class="tag ' + tagClass + '">' + AdminUI.escapeHtml(tour.category) + '</span>' +
-            '<span class="sub">' + tour.locationTags.join(', ') + '</span>' +
+            '<span class="sub">' + (priceLabel(tour) ? priceLabel(tour) + ' · ' : '') + tour.locationTags.join(', ') + '</span>' +
           '</div>' +
         '</div>' +
         '<div class="actions">' +
