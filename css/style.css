@@ -47,6 +47,29 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 img { max-width: 100%; display: block; }
+
+/* ---------- Image skeleton shimmer + lazy fade-in ----------
+   Every real photo fades in from a shimmering placeholder once it has
+   actually loaded, instead of popping in abruptly or (before a real photo
+   is uploaded in the admin) sitting on the raw placeholder SVG art. Wired
+   up generically in js/main.js, so this covers every img site-wide except
+   the small partner-logo strip (auto-width, no fixed box to shimmer in). */
+img.js-img {
+  background: linear-gradient(100deg, var(--color-sand-deep) 30%, var(--color-sand) 50%, var(--color-sand-deep) 70%);
+  background-size: 200% 100%;
+  animation: img-shimmer 1.4s ease-in-out infinite;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+img.js-img.is-loaded { opacity: 1; animation: none; background: none; }
+@keyframes img-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  img.js-img { animation: none; }
+}
+
 a { color: inherit; text-decoration: none; }
 ul { list-style: none; margin: 0; padding: 0; }
 h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; margin: 0 0 var(--space-2); color: var(--color-charcoal); }

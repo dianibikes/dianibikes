@@ -35,6 +35,39 @@
     });
   }
 
+  /* ---------- Image skeleton loading ----------
+     Every real <img> (the small auto-width partner-logo strip is exempt -
+     see its CSS) fades in from a shimmering placeholder instead of popping
+     in abruptly, whether it's already in the page on load or inserted later
+     via innerHTML from a Supabase read. Safe to call repeatedly on the same
+     root - already-wired images are skipped. */
+  function wireLazyImages(root) {
+    (root || document).querySelectorAll('img:not(.js-img)').forEach(function (img) {
+      if (img.closest('.partners-strip')) return;
+      img.classList.add('js-img');
+      if (!img.hasAttribute('loading')) img.loading = 'lazy';
+      function markLoaded() { img.classList.add('is-loaded'); }
+      if (img.complete && img.naturalWidth) markLoaded();
+      else {
+        img.addEventListener('load', markLoaded, { once: true });
+        img.addEventListener('error', markLoaded, { once: true });
+      }
+    });
+  }
+  // Re-points an <img> already on the page at a new src (e.g. once the real
+  // Supabase photo replaces the seed placeholder) and re-plays the skeleton
+  // for that swap, instead of leaving it at whatever loaded state the old
+  // src left behind.
+  function setImgSrc(img, src) {
+    img.classList.remove('is-loaded');
+    img.classList.add('js-img');
+    function markLoaded() { img.classList.add('is-loaded'); }
+    img.addEventListener('load', markLoaded, { once: true });
+    img.addEventListener('error', markLoaded, { once: true });
+    img.src = src;
+  }
+  wireLazyImages(document);
+
   /* ---------- FAQ accordion content (About / Rentals pages) ---------- */
   var faqContainer = document.querySelector('[data-faq-page]');
   if (faqContainer) {
@@ -87,6 +120,7 @@
             '<p class="role">' + escapeHtml(m.designation || '') + '</p>' +
           '</div>';
         }).join('');
+        wireLazyImages(teamGrid);
       }
     });
   }
@@ -134,6 +168,7 @@
           var src = (p.image || '').replace('../images/', 'images/');
           return '<a class="gallery-item' + tall + '" href="gallery.html"><img src="' + escapeHtml(src) + '" alt="' + escapeHtml(p.caption || 'Gallery photo') + '"></a>';
         }).join('');
+        wireLazyImages(homeGalleryGrid);
       }
     });
   }
@@ -179,6 +214,7 @@
             '</div>' +
           '</article>';
         }).join('');
+        wireLazyImages(bikeRatesGrid);
       }
 
       if (bikeQtyList) {
@@ -336,7 +372,7 @@
 
             var heroImg = tourRoot.querySelector('[data-tour-hero]');
             if (heroImg && (realPhotos[0] || tour.images[0])) {
-              heroImg.src = realPhotos[0] || tour.images[0];
+              setImgSrc(heroImg, realPhotos[0] || tour.images[0]);
               heroImg.alt = tour.title;
             }
 
@@ -346,6 +382,7 @@
                 glimpses.innerHTML = realPhotos.map(function (src) {
                   return '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(tour.title) + '" loading="lazy">';
                 }).join('');
+                wireLazyImages(glimpses);
               }
               var note = tourRoot.querySelector('[data-tour-glimpses-note]');
               if (note) note.style.display = 'none';
@@ -373,7 +410,7 @@
         var photo = realPhotosOf(cardTour)[0];
         if (photo) {
           var img = card.querySelector('.tour-card-media img');
-          if (img) { img.src = photo; img.alt = cardTour.title; }
+          if (img) { setImgSrc(img, photo); img.alt = cardTour.title; }
         }
 
         // Hand-written cards (e.g. "You Might Also Like") have no price
@@ -403,7 +440,10 @@
         var matches = tours
           .filter(function (t) { return t.category === wanted; })
           .sort(function (a, b) { return (a.createdAt || '').localeCompare(b.createdAt || ''); });
-        if (matches.length) grid.innerHTML = matches.map(tourCardHtml).join('');
+        if (matches.length) {
+          grid.innerHTML = matches.map(tourCardHtml).join('');
+          wireLazyImages(grid);
+        }
       });
 
       // Homepage "Browse by Location or Activity" filter. Location and
@@ -430,6 +470,7 @@
             resultsGrid.style.display = '';
             emptyMsg.style.display = 'none';
             resultsGrid.innerHTML = matches.map(tourCardHtml).join('');
+            wireLazyImages(resultsGrid);
           } else {
             resultsGrid.style.display = 'none';
             emptyMsg.textContent = 'No activities match that combination yet - try a different location or activity type.';
@@ -655,6 +696,7 @@
           '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(p.caption || 'Diani Bikes photo') + '" loading="lazy">' +
         '</div>';
       }).join('');
+      wireLazyImages(galleryPageGrid);
 
       var used = {};
       photos.forEach(function (p) { (p.tags || []).forEach(function (t) { used[t] = true; }); });
@@ -700,7 +742,7 @@
       lbIndex = (idx + visibleItems.length) % visibleItems.length;
       var img = visibleItems[lbIndex].querySelector('img');
       if (!img) return;
-      lbImg.src = img.src;
+      setImgSrc(lbImg, img.src);
       lbImg.alt = img.alt;
       lbCaption.textContent = img.alt;
       lightbox.classList.add('is-open');
