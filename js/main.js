@@ -292,11 +292,14 @@
   var tourCategoryGrids = document.querySelectorAll('[data-tour-category]');
   var exploreSection = document.querySelector('#explore');
   if (tourRoot || tourCategoryGrids.length || exploreSection) {
+    // Root-absolute: these are rendered onto tour.html too, which is served
+    // from /tours/<slug>, where a relative "bike-tours.html" would resolve to
+    // the non-existent /tours/bike-tours.html.
     var CATEGORY_URLS = {
-      'Bike Tours': 'bike-tours.html',
-      'Marine Excursions': 'marine-excursions.html',
-      'Forest Excursions': 'forest-excursions.html',
-      'Tuk Tuk Experience': 'tuk-tuk.html'
+      'Bike Tours': '/bike-tours.html',
+      'Marine Excursions': '/marine-excursions.html',
+      'Forest Excursions': '/forest-excursions.html',
+      'Tuk Tuk Experience': '/tuk-tuk.html'
     };
     function categoryTagClass(category) {
       if (category === 'Bike Tours') return 'tag-blue';
@@ -338,8 +341,16 @@
           return '<span class="tag ' + locationTagClass(loc) + '">' + escapeHtml(loc) + '</span>';
         }).join('');
     }
+    // Tour cards render on /tours/<slug> as well as on root-level pages, so
+    // any non-uploaded path (the seed "../images/..." placeholders) has to be
+    // rebased to the site root or it resolves under /tours/ and 404s.
+    function assetUrl(src) {
+      if (!src) return '';
+      if (/^https?:\/\//.test(src)) return src;
+      return '/' + String(src).replace(/^(\.\.\/)+/, '').replace(/^\/+/, '');
+    }
     function tourCardHtml(tour) {
-      var photo = realPhotosOf(tour)[0] || tour.images[0] || 'images/favicon.svg';
+      var photo = assetUrl(realPhotosOf(tour)[0] || (tour.images || [])[0] || 'images/favicon.png');
       return '<article class="tour-card">' +
         '<div class="tour-card-media">' +
           '<img src="' + escapeHtml(photo) + '" alt="' + escapeHtml(tour.title) + '">' +
@@ -365,7 +376,7 @@
       var catUrl = CATEGORY_URLS[tour.category];
       var canonical = window.location.origin + tourUrl(tour.id);
       var photos = realPhotosOf(tour);
-      var heroPhoto = photos[0] || (tour.images || [])[0] || '';
+      var heroPhoto = assetUrl(photos[0] || (tour.images || [])[0] || '');
 
       function setText(sel, value) {
         var el = tourRoot.querySelector(sel);
@@ -413,7 +424,7 @@
       setText('.hero-content .eyebrow', tour.category);
       var breadcrumb = tourRoot.querySelector('.breadcrumb');
       if (breadcrumb) {
-        breadcrumb.innerHTML = '<a href="index.html">Home</a>' +
+        breadcrumb.innerHTML = '<a href="/index.html">Home</a>' +
           (catUrl ? ' / <a href="' + catUrl + '">' + escapeHtml(tour.category) + '</a>' : '') +
           ' / ' + escapeHtml(tour.title);
       }
@@ -432,7 +443,7 @@
         var offerTagHtml = isOfferActive(tour) ? '<span class="tag tag-offer">' + tour.offerPercent + '% OFF</span>' : '';
         tagsRow.innerHTML = offerTagHtml + catTagHtml + (tour.locationTags || []).map(function (loc) {
           return loc === 'Tuk Tuk'
-            ? '<a href="tuk-tuk.html" class="tag tag-yellow">Tuk Tuk</a>'
+            ? '<a href="/tuk-tuk.html" class="tag tag-yellow">Tuk Tuk</a>'
             : '<span class="tag">' + escapeHtml(loc) + '</span>';
         }).join('');
       }
@@ -501,7 +512,7 @@
       /* ---- Structured data (the FAQPage half is injected by the FAQ block) ---- */
       var crumbs = [{ '@type': 'ListItem', position: 1, name: 'Home', item: window.location.origin + '/' }];
       if (catUrl) {
-        crumbs.push({ '@type': 'ListItem', position: 2, name: tour.category, item: window.location.origin + '/' + catUrl });
+        crumbs.push({ '@type': 'ListItem', position: 2, name: tour.category, item: window.location.origin + catUrl });
       }
       crumbs.push({ '@type': 'ListItem', position: crumbs.length + 1, name: tour.title });
       injectJsonLd({

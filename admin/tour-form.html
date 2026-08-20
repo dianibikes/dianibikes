@@ -407,7 +407,7 @@
       included: includedEditor.getItems(),
       excluded: excludedEditor.getItems(),
       carry: carryEditor.getItems(),
-      images: images.length ? images : ['../images/favicon.svg'],
+      images: images.length ? images : ['../images/favicon.png'],
       status: document.getElementById('f-status').value
     };
     AdminStore.upsert('tours', record).then(function (savedTour) {
