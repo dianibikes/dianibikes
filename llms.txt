@@ -5,32 +5,39 @@
 Diani Bikes ("A Cultural Adventure") was founded by Masha Kirao to inspire and empower adventurers of all ages to discover the wonders of the Kenyan coast in a fun, eco-friendly, and authentic way - on two wheels, by tuk tuk, by boat, or by camel. Tours are led by local, English-speaking guides. Open Monday–Saturday, 8am–6pm (closed Sundays). Locations: Diani Bazaar, Diani, and Jiweleupe, Watamu. Contact: +254 713 959668, info@dianibike-tours.com.
 
 ## Bike Tours
-- [Village Guided Bike Tour](https://dianibikes.vercel.app/village-guided-bike-tour.html): Guided ride through local village life in Diani and Watamu - homesteads, markets, and everyday coastal life.
-- [Kaya Kinondo Sacred Forest](https://dianibikes.vercel.app/kaya-kinondo-sacred-forest.html): Guided bike ride to a sacred Mijikenda forest site protected by the local community for generations.
-- [Giraffe Feeding Adventure](https://dianibikes.vercel.app/giraffe-feeding-adventure.html): Cycle to a wildlife stop for a close, hand-feeding encounter with giraffes.
-- [Elephant Sporting](https://dianibikes.vercel.app/elephant-sporting.html): Guided ride toward Watamu to spot elephants in their natural surroundings, by bike or tuk tuk.
-- [Bush Tour](https://dianibikes.vercel.app/bush-tour.html): Rugged guided bike tour through the coastal bush between Diani, Kilifi, and Watamu.
+- [Mijikenda Village & Culture Bike Tour](https://dianibikes.vercel.app/tours/mijikenda-village-culture-bike-tour): Am immersive journey into the heart of coastal Kenya! This guided tour takes you through a bustling village market, a local community school, and directly into an authentic Mijikenda homestead.
+- [Village Guided Bike Tour](https://dianibikes.vercel.app/tours/village-guided-bike-tour): Ride through the heart of local village life on this guided bike tour through Diani and Watamu.
+
+## Tuk Tuk Experience
+- [Bush Tour](https://dianibikes.vercel.app/tours/bush-tour): Get off the beaten track on a rugged ride through the coastal bush between Diani
+- [Giraffe Feeding Adventure](https://dianibikes.vercel.app/tours/giraffe-feeding-adventure): Join us for an unforgettable Giraffe Feeding Adventure and immerse yourself in the magic of wildlife encounters in Diani!
+- [Kaya Kinondo Sacred Forest](https://dianibikes.vercel.app/tours/kaya-kinondo-sacred-forest): Journey into the spiritual heart of Diani at Kaya Kinondo, one of the oldest sacred forests of the Mijikenda people.
+- [Malindi & Gede Ruins Tour](https://dianibikes.vercel.app/tours/malindi-gede-ruins-tour): On this half-day excursion, we’ll dive right into the living culture, history, and beauty of the Kenyan coast.
+- [Mambrui Sand Dunes & Marafa Hells Kitchen](https://dianibikes.vercel.app/tours/mambrui-sand-dunes-marafa-hells-kitchen): This half-day journey pairs the ocean-swept golden slopes of the MAMBRUI SAND DUNES with the striking sandstone gullies of Hell’s Kitchen in Marafa.
+- [Mijikenda Village & Cultural TukTuk Tour](https://dianibikes.vercel.app/tours/mijikenda-village-cultural-tuktuk-tour): Hop into an open-air TukTuk for an authentic journey into the heart of coastal Kenya!
+- [Robinson Island and Marafa Hell Kitchen Tour](https://dianibikes.vercel.app/tours/robinson-island-and-marafa-hell-kitchen-tour): Combining Robinson Island and Marafa into a single trip pairs a secluded seafood beach experience with a dramatic sunset hike.
 
 ## Marine Excursions
-- [Mangrove Tour (Sundowner)](https://dianibikes.vercel.app/mangrove-sundowner.html): Boat drift through mangrove channels as the sun sets over the water.
-- [Full Day Private Dolphin Tour](https://dianibikes.vercel.app/full-day-private-dolphin-tour.html): Full-day private boat charter searching the Indian Ocean for dolphins.
-- [Camel Adventure](https://dianibikes.vercel.app/camel-adventure.html): Relaxed guided camel ride along the white sand of Diani beach.
-- [Beach Tour](https://dianibikes.vercel.app/beach-tour.html): Guided walk or ride along Diani's beachfront.
+- [Camel Adventure](https://dianibikes.vercel.app/tours/camel-adventure): Trade two wheels for four legs with a relaxed camel ride along the white sand of Diani beach.
+- [Full Day Wasini Island & Dolphin Tour](https://dianibikes.vercel.app/tours/full-day-private-dolphin-tour): Set out on a private full-day dolphin tour around Wasini Island aboard your own yacht.
+- [Glass bottom boat](https://dianibikes.vercel.app/tours/beach-tour): Half day fun excursion with Snorkeling at Robinson Island
+- [Mangrove Tour (Sundowner)](https://dianibikes.vercel.app/tours/mangrove-sundowner): Enjoy a serene boat trip at the Kongo River Estuary, where you can spot wildlife like mangroves, birds .
+- [Nature Trail and Dhow Cruise](https://dianibikes.vercel.app/tours/nature-trail-and-dhow-cruise): Combine ancient forest wilderness with a tranquil mangrove cruise on this ultimate tour in Watamu.
 
 ## Forest Excursions
-- [Snake Show And School](https://dianibikes.vercel.app/snake-show-and-school.html): Educational, family-friendly stop to see native snake species up close.
-- [Ruins of Mnarani](https://dianibikes.vercel.app/ruins-of-mnarani.html): Historic Swahili settlement ruins overlooking Kilifi Creek.
-- [Monkey Trails And Conservation Centre](https://dianibikes.vercel.app/monkey-trails-and-conservation-centre.html): Guided forest walk with a conservation-focused local guide.
-- [Gede Ruins Tour](https://dianibikes.vercel.app/gede-ruins-tour.html): Ancient Swahili ruins near Watamu, among the coast's best-preserved historic sites.
+- [Elephant Sporting](https://dianibikes.vercel.app/tours/elephant-sporting): Hop into an open-air Tuk-Tuk for an exciting drive along the rugged natural trails of Arabuko Sokoke Forest.
+- [Gede Ruins Tour](https://dianibikes.vercel.app/tours/gede-ruins-tour): Discover the ancient Swahili ruins of Gede, hidden within the forest near Watamu and among the coast's best-preserved historic sites.
+- [Monkey Trails And Conservation Centre](https://dianibikes.vercel.app/tours/monkey-trails-and-conservation-centre): Explore the Monkey Trails and Conservation Centre in Diani for a quick but amazing adventure! Meet the old-world monkeys called Pili Colobus and discover their home in the trees.
+- [Nature Trail Guided Tour](https://dianibikes.vercel.app/tours/nature-trail-guided-tour): Step into East Africa's largest remaining coastal dry forest for an unforgettable guided nature walk in Arabuko Sokoke Forest! Led by our expert local guides
+- [Ruins of Mnarani](https://dianibikes.vercel.app/tours/ruins-of-mnarani): Talk a walk in Nature down memery lane as you learn about the rich hisorty Swahili people and culture and travde of the people who lived in Gede.
+- [Snake Show And School](https://dianibikes.vercel.app/tours/snake-show-and-school): An educational, family-friendly stop to see the coast's native snake species up close in a safe, controlled setting.
 
 ## Rentals
 - [Bike Rentals](https://dianibikes.vercel.app/rentals.html): Mountain, electric, manual, and kids' bikes - helmet and lock included with every rental.
 
-## Tuk Tuk Experience
-- [Tuk Tuk Experience](https://dianibikes.vercel.app/tuk-tuk.html): The same cultural and nature-packed tours, by tuk tuk instead of by bike.
-
 ## Other
 - [Bike Tours (overview)](https://dianibikes.vercel.app/bike-tours.html)
+- [Tuk Tuk Experience (overview)](https://dianibikes.vercel.app/tuk-tuk.html)
 - [Marine Excursions (overview)](https://dianibikes.vercel.app/marine-excursions.html)
 - [Forest Excursions (overview)](https://dianibikes.vercel.app/forest-excursions.html)
 - [About](https://dianibikes.vercel.app/about.html): Founder, mission, and FAQs.

@@ -68,6 +68,39 @@
   }
   wireLazyImages(document);
 
+  /* ---------- Tour URLs ----------
+     Every activity is served by the single tour.html template rather than a
+     per-activity HTML file, so adding one in the admin console is enough to
+     make its page exist. vercel.json rewrites /tours/<slug> onto that
+     template (and 301s the old /<slug>.html URLs here), so these are the
+     canonical links; tour.html?id=<slug> stays valid as a direct fallback. */
+  function tourUrl(slug, hash) {
+    return '/tours/' + encodeURIComponent(slug) + (hash || '');
+  }
+
+  /* Resolves which tour tour.html is showing, from /tours/<slug> or, when
+     the rewrite isn't in play (opening the file directly, local preview),
+     ?id=<slug>. Stamped onto the page before anything reads it - notably
+     the FAQ block below, which keys off data-faq-page. */
+  var tourTemplateRoot = document.querySelector('[data-tour-id]');
+  if (tourTemplateRoot && !tourTemplateRoot.getAttribute('data-tour-id')) {
+    var pathMatch = window.location.pathname.match(/\/tours\/([^\/?#]+)/);
+    var slug = pathMatch
+      ? decodeURIComponent(pathMatch[1])
+      : (new URLSearchParams(window.location.search).get('id') || '');
+    slug = slug.replace(/\.html$/, '');
+    tourTemplateRoot.setAttribute('data-tour-id', slug);
+    var faqTarget = tourTemplateRoot.querySelector('[data-faq-page]');
+    if (faqTarget) faqTarget.setAttribute('data-faq-page', slug);
+  }
+
+  function injectJsonLd(data) {
+    var el = document.createElement('script');
+    el.type = 'application/ld+json';
+    el.textContent = JSON.stringify(data);
+    document.head.appendChild(el);
+  }
+
   /* ---------- FAQ accordion content (About / Rentals pages) ---------- */
   var faqContainer = document.querySelector('[data-faq-page]');
   if (faqContainer) {
@@ -83,6 +116,23 @@
             '<div class="faq-answer"><p>' + escapeHtml(f.answer) + '</p></div>' +
           '</div>';
         }).join('');
+      }
+      // On the tour template the whole section starts hidden, so a tour with
+      // no questions yet doesn't render a bare "Common Questions" heading.
+      var faqSection = faqContainer.closest('[data-faq-section]');
+      if (faqSection && faqs.length) faqSection.hidden = false;
+      if (faqs.length && document.querySelector('[data-tour-id]')) {
+        injectJsonLd({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faqs.map(function (f) {
+            return {
+              '@type': 'Question',
+              name: f.question,
+              acceptedAnswer: { '@type': 'Answer', text: f.answer }
+            };
+          })
+        });
       }
     });
   }
@@ -229,23 +279,19 @@
     });
   }
 
-  /* ---------- Tour photos + tags: detail-page hero/glimpses/tags-row and
-     card thumbnails/tags ----------
-     Detail pages are tagged with data-tour-id="<tours.id slug>". Card
-     thumbnails (listing pages and "You Might Also Like" sections) need no
-     tagging - each card's own title link already encodes the slug
-     (href="camel-adventure.html"), so it's read straight off that instead.
-     Category/location tags are rebuilt from the live record everywhere, so
-     editing a tour in the admin (category, location tags) is reflected
-     across the whole site instead of the static tags baked in at build
-     time. An uploaded photo (a real https:// Storage URL) always wins over
-     the seed placeholder SVG left in the array, so admins don't have to
+  /* ---------- Tours: detail pages, category grids, homepage explore ----------
+     Every tour card and every activity page is rendered from the "tours"
+     table here, so the site has no per-tour markup to keep in sync - editing
+     a tour in the admin (title, category, prices, photos, lists) is
+     reflected everywhere at once, and adding one needs no code at all.
+     tour.html carries data-tour-id and is the page all activities are served
+     through; an uploaded photo (a real https:// Storage URL) always wins
+     over the seed placeholder SVG left in the array, so admins don't have to
      remember to delete the placeholder before their upload shows up. */
   var tourRoot = document.querySelector('[data-tour-id]');
-  var tourCards = document.querySelectorAll('.tour-card');
   var tourCategoryGrids = document.querySelectorAll('[data-tour-category]');
   var exploreSection = document.querySelector('#explore');
-  if (tourRoot || tourCards.length || tourCategoryGrids.length || exploreSection) {
+  if (tourRoot || tourCategoryGrids.length || exploreSection) {
     var CATEGORY_URLS = {
       'Bike Tours': 'bike-tours.html',
       'Marine Excursions': 'marine-excursions.html',
@@ -300,136 +346,201 @@
           '<div class="tour-card-tags">' + tourCardTagsHtml(tour) + '</div>' +
         '</div>' +
         '<div class="tour-card-body">' +
-          '<h3><a href="' + tour.id + '.html">' + escapeHtml(tour.title) + '</a></h3>' +
+          '<h3><a href="' + tourUrl(tour.id) + '">' + escapeHtml(tour.title) + '</a></h3>' +
           '<p>' + escapeHtml(tour.description || '') + '</p>' +
           (tourPriceLine(tour) ? '<p class="tour-card-price">' + tourPriceLine(tour) + '</p>' : '') +
           '<div class="tour-card-footer">' +
-            '<a href="' + tour.id + '.html#booking-form" class="btn btn-primary btn-sm">Book Now</a>' +
-            '<a href="' + tour.id + '.html" class="btn-link">View Details</a>' +
+            '<a href="' + tourUrl(tour.id, '#booking-form') + '" class="btn btn-primary btn-sm">Book Now</a>' +
+            '<a href="' + tourUrl(tour.id) + '" class="btn-link">View Details</a>' +
           '</div>' +
         '</div>' +
       '</article>';
+    }
+
+    /* Renders the whole tour.html template from one tour record. Everything
+       visible on an activity's page comes from here, so a change made in the
+       admin console (title, category, prices, lists, photos) is reflected in
+       full without any per-tour HTML to keep in sync. */
+    function renderTourPage(tour, publishedTours) {
+      var catUrl = CATEGORY_URLS[tour.category];
+      var canonical = window.location.origin + tourUrl(tour.id);
+      var photos = realPhotosOf(tour);
+      var heroPhoto = photos[0] || (tour.images || [])[0] || '';
+
+      function setText(sel, value) {
+        var el = tourRoot.querySelector(sel);
+        if (el) el.textContent = value;
+      }
+      function setMeta(sel, value) {
+        var el = document.head.querySelector(sel);
+        if (el) el.setAttribute('content', value);
+      }
+      function listHtml(items, iconHtml) {
+        return (items || []).map(function (item) {
+          return '<li>' + iconHtml + ' ' + escapeHtml(item) + '</li>';
+        }).join('');
+      }
+      // Reveals a section only when the admin has actually filled it in, so
+      // a sparse tour never shows an empty heading with nothing under it.
+      function fillList(listSel, boxSel, items, iconHtml) {
+        var list = tourRoot.querySelector(listSel);
+        var box = tourRoot.querySelector(boxSel);
+        var has = !!(items && items.length);
+        if (list && has) list.innerHTML = listHtml(items, iconHtml);
+        if (box) box.hidden = !has;
+        return has;
+      }
+
+      /* ---- Page identity: tab title, meta, canonical, social cards ---- */
+      var pageTitle = tour.title + ' | Diani Bikes';
+      var pageDesc = tour.description || 'Book ' + tour.title + ' with Diani Bikes - guided tours and excursions on the Kenyan coast.';
+      document.title = pageTitle;
+      setMeta('meta[name="description"]', pageDesc);
+      setMeta('meta[property="og:title"]', pageTitle);
+      setMeta('meta[property="og:description"]', pageDesc);
+      setMeta('meta[property="og:url"]', canonical);
+      setMeta('meta[name="twitter:title"]', pageTitle);
+      setMeta('meta[name="twitter:description"]', pageDesc);
+      if (heroPhoto) {
+        setMeta('meta[property="og:image"]', heroPhoto);
+        setMeta('meta[name="twitter:image"]', heroPhoto);
+      }
+      var canonicalEl = document.head.querySelector('link[rel="canonical"]');
+      if (canonicalEl) canonicalEl.setAttribute('href', canonical);
+
+      /* ---- Hero ---- */
+      setText('[data-tour-title]', tour.title);
+      setText('.hero-content .eyebrow', tour.category);
+      var breadcrumb = tourRoot.querySelector('.breadcrumb');
+      if (breadcrumb) {
+        breadcrumb.innerHTML = '<a href="index.html">Home</a>' +
+          (catUrl ? ' / <a href="' + catUrl + '">' + escapeHtml(tour.category) + '</a>' : '') +
+          ' / ' + escapeHtml(tour.title);
+      }
+      var heroImg = tourRoot.querySelector('[data-tour-hero]');
+      if (heroImg && heroPhoto) {
+        setImgSrc(heroImg, heroPhoto);
+        heroImg.alt = tour.title;
+      }
+
+      /* ---- Tags, price, summary, itinerary ---- */
+      var tagsRow = tourRoot.querySelector('.tour-tags-row');
+      if (tagsRow) {
+        var catTagHtml = catUrl
+          ? '<a href="' + catUrl + '" class="tag ' + categoryTagClass(tour.category) + '">' + escapeHtml(tour.category) + '</a>'
+          : '<span class="tag ' + categoryTagClass(tour.category) + '">' + escapeHtml(tour.category) + '</span>';
+        var offerTagHtml = isOfferActive(tour) ? '<span class="tag tag-offer">' + tour.offerPercent + '% OFF</span>' : '';
+        tagsRow.innerHTML = offerTagHtml + catTagHtml + (tour.locationTags || []).map(function (loc) {
+          return loc === 'Tuk Tuk'
+            ? '<a href="tuk-tuk.html" class="tag tag-yellow">Tuk Tuk</a>'
+            : '<span class="tag">' + escapeHtml(loc) + '</span>';
+        }).join('');
+      }
+
+      var priceEl = tourRoot.querySelector('[data-tour-price]');
+      if (priceEl) {
+        var line = tourPriceLine(tour);
+        if (line) { priceEl.innerHTML = line; priceEl.style.display = ''; }
+        else priceEl.style.display = 'none';
+      }
+
+      var summaryEl = tourRoot.querySelector('[data-tour-summary]');
+      if (summaryEl && tour.description) {
+        summaryEl.innerHTML = '<p>' + escapeHtml(tour.description) + '</p>';
+      }
+      var itineraryEl = tourRoot.querySelector('[data-tour-itinerary]');
+      if (itineraryEl && tour.itinerary) {
+        itineraryEl.innerHTML = '<h3 style="margin-top: var(--space-4);">Itinerary</h3>' +
+          tour.itinerary.split(/\n+/).map(function (s) { return s.trim(); }).filter(Boolean)
+            .map(function (p) { return '<p>' + escapeHtml(p) + '</p>'; }).join('');
+      }
+
+      /* ---- Included / Not Included / What To Carry ---- */
+      var tickIcon = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>';
+      var crossIcon = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+      var dotIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg>';
+      var hasIncluded = fillList('[data-tour-included]', '[data-tour-included-box]', tour.included, tickIcon);
+      var hasExcluded = fillList('[data-tour-excluded]', '[data-tour-excluded-box]', tour.excluded, crossIcon);
+      fillList('[data-tour-carry]', '[data-tour-carry-box]', tour.carry, dotIcon);
+      var includedWrap = tourRoot.querySelector('[data-tour-whats-included]');
+      if (includedWrap) includedWrap.hidden = !(hasIncluded || hasExcluded);
+
+      /* ---- Photo glimpses (only real uploads, never seed placeholders) ---- */
+      var glimpses = tourRoot.querySelector('[data-tour-glimpses]');
+      var glimpsesSection = tourRoot.querySelector('[data-tour-glimpses-section]');
+      if (glimpses && photos.length) {
+        glimpses.innerHTML = photos.map(function (src) {
+          return '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(tour.title) + '" loading="lazy">';
+        }).join('');
+        wireLazyImages(glimpses);
+        if (glimpsesSection) glimpsesSection.hidden = false;
+      }
+
+      /* ---- Booking form: what the enquiry says it's about ---- */
+      var interestEl = tourRoot.querySelector('[data-tour-interest]');
+      if (interestEl) interestEl.value = tour.title;
+
+      /* ---- "You Might Also Like": same category, this tour excluded ---- */
+      var related = publishedTours.filter(function (t) {
+        return t.category === tour.category && t.id !== tour.id;
+      }).slice(0, 3);
+      var relatedGrid = tourRoot.querySelector('[data-tour-related]');
+      var relatedSection = tourRoot.querySelector('[data-tour-related-section]');
+      if (relatedGrid && related.length) {
+        relatedGrid.innerHTML = related.map(tourCardHtml).join('');
+        wireLazyImages(relatedGrid);
+        setText('[data-tour-related-heading]', 'More From ' + tour.category);
+        var relatedCta = tourRoot.querySelector('[data-tour-related-cta]');
+        if (relatedCta && catUrl) {
+          relatedCta.setAttribute('href', catUrl);
+          relatedCta.textContent = 'See All ' + tour.category;
+        }
+        if (relatedSection) relatedSection.hidden = false;
+      }
+
+      /* ---- Structured data (the FAQPage half is injected by the FAQ block) ---- */
+      var crumbs = [{ '@type': 'ListItem', position: 1, name: 'Home', item: window.location.origin + '/' }];
+      if (catUrl) {
+        crumbs.push({ '@type': 'ListItem', position: 2, name: tour.category, item: window.location.origin + '/' + catUrl });
+      }
+      crumbs.push({ '@type': 'ListItem', position: crumbs.length + 1, name: tour.title });
+      injectJsonLd({
+        '@context': 'https://schema.org',
+        '@graph': [
+          { '@type': 'BreadcrumbList', itemListElement: crumbs },
+          {
+            '@type': 'TouristTrip',
+            name: tour.title,
+            description: pageDesc,
+            image: heroPhoto || undefined,
+            url: canonical,
+            provider: { '@id': window.location.origin + '/#organization' },
+            touristType: 'Adventure travelers'
+          }
+        ]
+      });
     }
 
     dbGetAll('tours').then(function (allTours) {
       var tours = allTours.filter(function (t) { return t.status !== 'Draft'; });
       var byId = {};
       tours.forEach(function (t) { byId[t.id] = t; });
-      var byIdAll = {};
-      allTours.forEach(function (t) { byIdAll[t.id] = t; });
 
       if (tourRoot) {
-        var tour = byId[tourRoot.getAttribute('data-tour-id')];
+        var wanted = tourRoot.getAttribute('data-tour-id');
+        var tour = byId[wanted];
+        var missingEl = tourRoot.querySelector('[data-tour-missing]');
+        var bodyEl = tourRoot.querySelector('[data-tour-body]');
         if (tour) {
-          var catUrl = CATEGORY_URLS[tour.category];
-
-          // Hero breadcrumb + eyebrow - these declare the tour's category
-          // just as prominently as the tags row, so they need to stay in
-          // sync with it (both driven by the same tour.category).
-          var breadcrumb = tourRoot.querySelector('.breadcrumb');
-          if (breadcrumb && catUrl) {
-            breadcrumb.innerHTML = '<a href="index.html">Home</a> / <a href="' + catUrl + '">' + escapeHtml(tour.category) + '</a> / ' + escapeHtml(tour.title);
-          }
-          var heroEyebrow = tourRoot.querySelector('.hero-content .eyebrow');
-          if (heroEyebrow) heroEyebrow.textContent = tour.category;
-
-          var tagsRow = tourRoot.querySelector('.tour-tags-row');
-          if (tagsRow) {
-            var catTagHtml = catUrl
-              ? '<a href="' + catUrl + '" class="tag ' + categoryTagClass(tour.category) + '">' + escapeHtml(tour.category) + '</a>'
-              : '<span class="tag ' + categoryTagClass(tour.category) + '">' + escapeHtml(tour.category) + '</span>';
-            var offerTagHtml = isOfferActive(tour) ? '<span class="tag tag-offer">' + tour.offerPercent + '% OFF</span>' : '';
-            tagsRow.innerHTML = offerTagHtml + catTagHtml + (tour.locationTags || []).map(function (loc) {
-              return loc === 'Tuk Tuk'
-                ? '<a href="tuk-tuk.html" class="tag tag-yellow">Tuk Tuk</a>'
-                : '<span class="tag">' + escapeHtml(loc) + '</span>';
-            }).join('');
-          }
-
-          var priceEl = tourRoot.querySelector('[data-tour-price]');
-          if (priceEl) {
-            var line = tourPriceLine(tour);
-            if (line) { priceEl.innerHTML = line; priceEl.style.display = ''; }
-            else priceEl.style.display = 'none';
-          }
-
-          // Short summary (also used as the card blurb) + optional longer
-          // itinerary, shown only here on the tour's own page, below the
-          // summary. Both come straight from the admin Tour editor.
-          var summaryEl = tourRoot.querySelector('[data-tour-summary]');
-          if (summaryEl && tour.description) {
-            summaryEl.innerHTML = '<p>' + escapeHtml(tour.description) + '</p>';
-          }
-          var itineraryEl = tourRoot.querySelector('[data-tour-itinerary]');
-          if (itineraryEl && tour.itinerary) {
-            var itineraryParas = tour.itinerary.split(/\n+/).map(function (s) { return s.trim(); }).filter(Boolean);
-            itineraryEl.innerHTML = '<h3 style="margin-top: var(--space-4);">Itinerary</h3>' +
-              itineraryParas.map(function (p) { return '<p>' + escapeHtml(p) + '</p>'; }).join('');
-          }
-
-          if (tour.images && tour.images.length) {
-            var realPhotos = realPhotosOf(tour);
-
-            var heroImg = tourRoot.querySelector('[data-tour-hero]');
-            if (heroImg && (realPhotos[0] || tour.images[0])) {
-              setImgSrc(heroImg, realPhotos[0] || tour.images[0]);
-              heroImg.alt = tour.title;
-            }
-
-            if (realPhotos.length) {
-              var glimpses = tourRoot.querySelector('[data-tour-glimpses]');
-              if (glimpses) {
-                glimpses.innerHTML = realPhotos.map(function (src) {
-                  return '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(tour.title) + '" loading="lazy">';
-                }).join('');
-                wireLazyImages(glimpses);
-              }
-              var note = tourRoot.querySelector('[data-tour-glimpses-note]');
-              if (note) note.style.display = 'none';
-            }
-          }
+          if (bodyEl) bodyEl.hidden = false;
+          renderTourPage(tour, tours);
+        } else if (missingEl) {
+          // Unknown slug, or one taken back to Draft in the admin - show the
+          // not-found panel rather than an empty shell of a tour page.
+          missingEl.hidden = false;
+          document.title = 'Activity Not Found | Diani Bikes';
         }
       }
-
-      tourCards.forEach(function (card) {
-        var link = card.querySelector('h3 a');
-        if (!link) return;
-        var slug = (link.getAttribute('href') || '').replace(/#.*$/, '').replace(/\.html$/, '');
-        var cardTour = byId[slug];
-        if (!cardTour) {
-          // Hand-written cards (e.g. "You Might Also Like") that point at a
-          // tour taken back to Draft in the admin shouldn't linger on the
-          // front end just because their markup is baked into the page.
-          if (byIdAll[slug] && byIdAll[slug].status === 'Draft') card.remove();
-          return;
-        }
-
-        var tagsEl = card.querySelector('.tour-card-tags');
-        if (tagsEl) tagsEl.innerHTML = tourCardTagsHtml(cardTour);
-
-        var photo = realPhotosOf(cardTour)[0];
-        if (photo) {
-          var img = card.querySelector('.tour-card-media img');
-          if (img) { setImgSrc(img, photo); img.alt = cardTour.title; }
-        }
-
-        // Hand-written cards (e.g. "You Might Also Like") have no price
-        // markup baked in, so add or drop a price line here to match
-        // whatever's rendered by tourCardHtml() for JS-built grids.
-        var body = card.querySelector('.tour-card-body');
-        var priceEl = body && body.querySelector('.tour-card-price');
-        var line = tourPriceLine(cardTour);
-        if (line) {
-          if (!priceEl && body) {
-            priceEl = document.createElement('p');
-            priceEl.className = 'tour-card-price';
-            body.insertBefore(priceEl, body.querySelector('.tour-card-footer'));
-          }
-          if (priceEl) priceEl.innerHTML = line;
-        } else if (priceEl) {
-          priceEl.remove();
-        }
-      });
 
       // Category listing pages (Bike Tours, Tuk Tuk Experience, Marine
       // Excursions, Forest Excursions) - the grid is empty in the HTML and

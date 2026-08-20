@@ -2,134 +2,176 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://dianibikes.vercel.app/</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dianibikes.vercel.app/bike-tours.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://dianibikes.vercel.app/tuk-tuk.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://dianibikes.vercel.app/marine-excursions.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://dianibikes.vercel.app/forest-excursions.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://dianibikes.vercel.app/rentals.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://dianibikes.vercel.app/about.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://dianibikes.vercel.app/gallery.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://dianibikes.vercel.app/contact.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://dianibikes.vercel.app/tours/beach-tour</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dianibikes.vercel.app/village-guided-bike-tour.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <loc>https://dianibikes.vercel.app/tours/bush-tour</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dianibikes.vercel.app/kaya-kinondo-sacred-forest.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <loc>https://dianibikes.vercel.app/tours/camel-adventure</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dianibikes.vercel.app/giraffe-feeding-adventure.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <loc>https://dianibikes.vercel.app/tours/elephant-sporting</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dianibikes.vercel.app/elephant-sporting.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <loc>https://dianibikes.vercel.app/tours/full-day-private-dolphin-tour</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dianibikes.vercel.app/bush-tour.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <loc>https://dianibikes.vercel.app/tours/gede-ruins-tour</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dianibikes.vercel.app/mangrove-sundowner.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <loc>https://dianibikes.vercel.app/tours/giraffe-feeding-adventure</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dianibikes.vercel.app/full-day-private-dolphin-tour.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <loc>https://dianibikes.vercel.app/tours/kaya-kinondo-sacred-forest</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dianibikes.vercel.app/camel-adventure.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <loc>https://dianibikes.vercel.app/tours/malindi-gede-ruins-tour</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dianibikes.vercel.app/beach-tour.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <loc>https://dianibikes.vercel.app/tours/mambrui-sand-dunes-marafa-hells-kitchen</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dianibikes.vercel.app/snake-show-and-school.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <loc>https://dianibikes.vercel.app/tours/mangrove-sundowner</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dianibikes.vercel.app/ruins-of-mnarani.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <loc>https://dianibikes.vercel.app/tours/mijikenda-village-cultural-tuktuk-tour</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dianibikes.vercel.app/monkey-trails-and-conservation-centre.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <loc>https://dianibikes.vercel.app/tours/mijikenda-village-culture-bike-tour</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://dianibikes.vercel.app/gede-ruins-tour.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <loc>https://dianibikes.vercel.app/tours/monkey-trails-and-conservation-centre</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dianibikes.vercel.app/tours/nature-trail-and-dhow-cruise</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dianibikes.vercel.app/tours/nature-trail-guided-tour</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dianibikes.vercel.app/tours/robinson-island-and-marafa-hell-kitchen-tour</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dianibikes.vercel.app/tours/ruins-of-mnarani</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dianibikes.vercel.app/tours/snake-show-and-school</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dianibikes.vercel.app/tours/village-guided-bike-tour</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>

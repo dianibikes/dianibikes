@@ -1,0 +1,21 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/tours/:slug", "destination": "/tour.html" }
+  ],
+  "redirects": [
+    { "source": "/beach-tour.html", "destination": "/tours/beach-tour", "permanent": true },
+    { "source": "/bush-tour.html", "destination": "/tours/bush-tour", "permanent": true },
+    { "source": "/camel-adventure.html", "destination": "/tours/camel-adventure", "permanent": true },
+    { "source": "/elephant-sporting.html", "destination": "/tours/elephant-sporting", "permanent": true },
+    { "source": "/full-day-private-dolphin-tour.html", "destination": "/tours/full-day-private-dolphin-tour", "permanent": true },
+    { "source": "/gede-ruins-tour.html", "destination": "/tours/gede-ruins-tour", "permanent": true },
+    { "source": "/giraffe-feeding-adventure.html", "destination": "/tours/giraffe-feeding-adventure", "permanent": true },
+    { "source": "/kaya-kinondo-sacred-forest.html", "destination": "/tours/kaya-kinondo-sacred-forest", "permanent": true },
+    { "source": "/mangrove-sundowner.html", "destination": "/tours/mangrove-sundowner", "permanent": true },
+    { "source": "/monkey-trails-and-conservation-centre.html", "destination": "/tours/monkey-trails-and-conservation-centre", "permanent": true },
+    { "source": "/ruins-of-mnarani.html", "destination": "/tours/ruins-of-mnarani", "permanent": true },
+    { "source": "/snake-show-and-school.html", "destination": "/tours/snake-show-and-school", "permanent": true },
+    { "source": "/village-guided-bike-tour.html", "destination": "/tours/village-guided-bike-tour", "permanent": true }
+  ]
+}
